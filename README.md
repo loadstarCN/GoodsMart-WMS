@@ -60,12 +60,12 @@ GoodsMart WMS 生态系统
 ### 手动安装
 ```bash
 # 1. 部署后端
-git clone https://github.com/yourusername/GoodsMart-WMS-Backend.git
+git clone https://github.com/loadstarCN/GoodsMart-WMS-Backend.git
 cd GoodsMart-WMS-Backend
 # 按照后端README操作
 
 # 2. 部署前端  
-git clone https://github.com/yourusername/GoodsMart-WMS-Web.git
+git clone https://github.com/loadstarCN/GoodsMart-WMS-Web.git
 cd GoodsMart-WMS-Web
 # 按照前端README操作
 ```
