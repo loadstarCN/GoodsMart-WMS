@@ -1,0 +1,6 @@
+[submodule "GoodsMart-WMS-Backend"]
+	path = GoodsMart-WMS-Backend
+	url = https://github.com/loadstarCN/GoodsMart-WMS-Backend.git
+[submodule "GoodsMart-WMS-Web"]
+	path = GoodsMart-WMS-Web
+	url = https://github.com/loadstarCN/GoodsMart-WMS-Web.git
