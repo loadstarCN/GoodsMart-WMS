@@ -1,9 +1,8 @@
 # GoodsMart WMS - 开源仓库管理系统
-
-[https://img.shields.io/badge/License-AGPL%20v3-blue.svg](https://www.gnu.org/licenses/agpl-3.0)
-[https://img.shields.io/badge/Backend-Flask-green.svg](https://flask.palletsprojects.com/)
-[https://img.shields.io/badge/Frontend-Nuxt.js-00DC82.svg](https://nuxt.com/)
-[https://img.shields.io/badge/Database-PostgreSQL-336791.svg](https://www.postgresql.org/)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Backend - Flask](https://img.shields.io/badge/Backend-Flask-green.svg)](https://flask.palletsprojects.com/)
+[![Frontend - Nuxt.js](https://img.shields.io/badge/Frontend-Nuxt.js-00DC82.svg)](https://nuxt.com/)
+[![Database - PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791.svg)](https://www.postgresql.org/)
 
 **GoodsMart WMS** 是一个现代化、功能完整的开源仓库管理系统，专为中小型企业设计，提供专业的仓库运营管理解决方案。
 
