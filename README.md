@@ -1,130 +1,133 @@
-# GoodsMart WMS - 开源仓库管理系统
+# GoodsMart WMS - Open Source Warehouse Management System  
+
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Backend - Flask](https://img.shields.io/badge/Backend-Flask-green.svg)](https://flask.palletsprojects.com/)
 [![Frontend - Nuxt.js](https://img.shields.io/badge/Frontend-Nuxt.js-00DC82.svg)](https://nuxt.com/)
 [![Database - PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791.svg)](https://www.postgresql.org/)
 
-**GoodsMart WMS** 是一个现代化、功能完整的开源仓库管理系统，专为中小型企业设计，提供专业的仓库运营管理解决方案。
+[中文 README](./README-zh.md)
 
-## 🎯 项目特色
+**GoodsMart WMS** is a modern, fully-featured open-source warehouse management system designed for small and medium-sized enterprises, offering a professional solution for warehouse operations management.  
 
-- **🔄 全栈解决方案** - 包含前后端完整代码，开箱即用
-- **📱 多端支持** - Web端 + 移动端（开发中）
-- **🔧 模块化设计** - 易于扩展和定制
-- **🌍 国际化** - 多语言支持（中/英/日)，全球可用
+## 🎯 Key Features  
 
-## 🏗️ 系统架构
+- **🔄 Full-Stack Solution** – Includes complete frontend and backend code, ready to use out-of-the-box  
+- **📱 Multi-Platform Support** – Web + Mobile (in development)  
+- **🔧 Modular Design** – Easy to extend and customize  
+- **🌍 Internationalization** – Multi-language support (CN/EN/JP), globally applicable  
+
+## 🏗️ System Architecture  
 
 ```
-GoodsMart WMS 生态系统
-├── 🖥️ GoodsMart-WMS-Backend    - Flask API 后端服务
-├── 🌐 GoodsMart-WMS-Web       - Nuxt.js Web 前端
-├── 📱 GoodsMart-WMS-Mobile    - 移动端（即将推出）
-└── 📚 GoodsMart-WMS-Docs      - 完整文档
+GoodsMart WMS Ecosystem  
+├── 🖥️ GoodsMart-WMS-Backend    – Flask API Backend Service  
+├── 🌐 GoodsMart-WMS-Web       – Nuxt.js Web Frontend  
+├── 📱 GoodsMart-WMS-Mobile    – Mobile App (Coming Soon)  
+└── 📚 GoodsMart-WMS-Docs      – Comprehensive Documentation  
 ```
 
-## ✨ 核心功能
+## ✨ Core Features  
 
-### 📦 库存管理
-- **实时库存监控** - 多维度库存查询和预警
-- **批次管理** - 商品批次、序列号跟踪管理
-- **库存调整** - 库存盘点、报损、调拨功能
-- **库存预警** - 低库存预警和过期提醒
+### 📦 Inventory Management  
+- **Real-Time Inventory Monitoring** – Multi-dimensional inventory queries and alerts  
+- **Batch Management** – Product batch and serial number tracking  
+- **Inventory Adjustments** – Stocktaking, loss reporting, and transfers  
+- **Inventory Alerts** – Low stock warnings and expiration reminders  
 
-### 🏢 仓库运营
-- **多仓库管理** - 支持多个仓库的统一管理
-- **库位管理** - 精细化库位管理和优化
-- **入库管理** - 采购入库、调拨入库、退货入库
-- **出库管理** - 销售出库、调拨出库、领用出库
+### 🏢 Warehouse Operations  
+- **Multi-Warehouse Management** – Unified management of multiple warehouses  
+- **Location Management** – Detailed storage location management and optimization  
+- **Inbound Management** – Purchase receiving, transfer receiving, and return receiving  
+- **Outbound Management** – Sales shipping, transfer shipping, and requisition shipping  
 
-### 🔍 商品管理
-- **商品信息** - 完整的商品属性管理
-- **分类管理** - 多级商品分类体系
-- **条码管理** - 支持多种条码格式
-- **供应商管理** - 供应商信息维护
+### 🔍 Product Management  
+- **Product Information** – Complete product attribute management  
+- **Category Management** – Multi-level product classification system  
+- **Barcode Management** – Supports multiple barcode formats  
+- **Supplier Management** – Supplier information maintenance  
 
-### 📊 报表分析
-- **库存报表** - 实时库存状态报表
-- **出入库报表** - 出入库流水统计
-- **盘点报表** - 库存差异分析
-- **操作日志** - 完整的操作审计跟踪
+### 📊 Reporting & Analytics  
+- **Inventory Reports** – Real-time inventory status reports  
+- **Inbound/Outbound Reports** – Inbound and outbound transaction statistics  
+- **Stocktake Reports** – Inventory variance analysis  
+- **Operation Logs** – Comprehensive operation audit trails  
 
-### 👥 权限控制
-- **角色权限** - 多角色权限管理系统
-- **操作权限** - 细粒度功能权限控制
-- **数据权限** - 按仓库划分数据权限
-- **安全审计** - 操作日志和安全审计
+### 👥 Access Control  
+- **Role-Based Permissions** – Multi-role permission management system  
+- **Operation Permissions** – Fine-grained functional permission control  
+- **Data Permissions** – Data access restricted by warehouse  
+- **Security Auditing** – Operation logs and security audits  
 
-## 🚀 快速开始
+## 🚀 Quick Start  
 
-### 手动安装
-```bash
-# 1. 部署后端
-git clone https://github.com/loadstarCN/GoodsMart-WMS-Backend.git
-cd GoodsMart-WMS-Backend
-# 按照后端README操作
+### Manual Installation  
+```bash  
+# 1. Deploy the backend  
+git clone https://github.com/yourusername/GoodsMart-WMS-Backend.git  
+cd GoodsMart-WMS-Backend  
+# Follow the backend README instructions  
 
-# 2. 部署前端  
-git clone https://github.com/loadstarCN/GoodsMart-WMS-Web.git
-cd GoodsMart-WMS-Web
-# 按照前端README操作
-```
+# 2. Deploy the frontend  
+git clone https://github.com/yourusername/GoodsMart-WMS-Web.git  
+cd GoodsMart-WMS-Web  
+# Follow the frontend README instructions  
+```  
 
-## 📋 技术栈
+## 📋 Tech Stack  
 
-| 组件 | 技术选择 | 说明 |
-|------|----------|------|
-| **后端API** | Flask + SQLAlchemy | RESTful API 服务 |
-| **前端Web** | Nuxt.js 4 | 现代化前端框架 |
-| **数据库** | PostgreSQL | 企业级关系数据库 |
-| **缓存** | Redis | 高性能缓存服务 |
-| **任务队列** | Celery | 异步任务处理 |
+| Component         | Technology          | Description                     |  
+|-------------------|---------------------|---------------------------------|  
+| **Backend API**   | Flask + SQLAlchemy  | RESTful API service             |  
+| **Frontend Web**  | Nuxt.js 4           | Modern frontend framework       |  
+| **Database**      | PostgreSQL          | Enterprise relational database  |  
+| **Caching**       | Redis               | High-performance caching        |  
+| **Task Queue**    | Celery              | Asynchronous task processing    |  
 
-## 🌟 适用场景
+## 🌟 Use Cases  
 
-- **🏭 制造企业** - 原材料和成品仓库管理
-- **🛒 零售行业** - 商品库存和门店配送管理  
-- **📚 图书档案** - 图书资料仓储管理
-- **🏥 医疗行业** - 药品和医疗器械库存管理
-- **🚚 物流仓储** - 第三方仓储服务管理
+- **🏭 Manufacturing** – Raw material and finished goods warehouse management  
+- **🛒 Retail** – Product inventory and store distribution management  
+- **📚 Libraries & Archives** – Book and archival material storage management  
+- **🏥 Healthcare** – Medicine and medical equipment inventory management  
+- **🚚 Logistics & Warehousing** – Third-party warehousing services management  
 
-## 🎯 设计理念
+## 🎯 Design Philosophy  
 
-GoodsMart WMS 专注于纯粹的仓库管理需求，提供：
-- **专业化** - 深度优化的仓库作业流程
-- **易用性** - 直观的用户界面和操作体验
-- **可靠性** - 稳定可靠的数据管理和事务处理
-- **扩展性** - 模块化设计便于功能扩展
+GoodsMart WMS focuses on pure warehouse management needs, providing:  
+- **Professionalism** – Deeply optimized warehouse operation workflows  
+- **Usability** – Intuitive user interface and smooth operation experience  
+- **Reliability** – Stable and reliable data management and transaction processing  
+- **Extensibility** – Modular design for easy functional expansion  
 
-## 🤝 参与贡献
+## 🤝 Contributing  
 
-我们欢迎各种形式的贡献！请参阅：
+We welcome contributions in all forms! Please refer to:  
 
-- docs/CONTRIBUTING.md - 如何参与开发
-- docs/CODE_STYLE.md - 代码编写规范
-- docs/ROADMAP.md - 项目发展计划
+- docs/CONTRIBUTING.md – How to participate in development  
+- docs/CODE_STYLE.md – Code style guidelines  
+- docs/ROADMAP.md – Project development plan  
 
-## 📞 支持与交流
+## 📞 Support & Communication  
 
-- 📖 https://github.com/loadstarCN/GoodsMart-WMS-Docs
-- 🐛 https://github.com/loadstarCN/GoodsMart-WMS/issues
-- 💬 https://github.com/loadstarCN/GoodsMart-WMS/discussions
-- 📧 邮箱支持: goodsmart@goodsmart.jp
+- 📖 https://github.com/loadstarCN/GoodsMart-WMS-Docs  
+- 🐛 https://github.com/loadstarCN/GoodsMart-WMS/issues  
+- 💬 https://github.com/loadstarCN/GoodsMart-WMS/discussions  
+- 📧 Email Support: goodsmart@goodsmart.jp  
 
-## 📄 许可证
+## 📄 License  
 
-本项目采用 **GNU Affero General Public License v3.0** 许可证，详情请查看 LICENSE 文件。
+This project is licensed under the **GNU Affero General Public License v3.0**. For details, please see the LICENSE file.  
 
-> 💡 请注意：AGPLv3 许可证要求所有修改和衍生作品必须开源。如需商业使用许可，请联系我们获取商业授权。
+> 💡 Note: The AGPLv3 license requires that all modifications and derivative works must be open source. For commercial licensing, please contact us for commercial authorization.  
 
-## 🙏 致谢
+## 🙏 Acknowledgments  
 
-感谢所有为这个项目做出贡献的开发者、测试者和文档编写者。特别感谢：
+Thanks to all the developers, testers, and documentation writers who have contributed to this project. Special thanks to:  
 
-- 开源社区提供的优秀工具和库
-- 早期用户提供的宝贵反馈
-- 贡献者们的辛勤工作
+- The open-source community for providing excellent tools and libraries  
+- Early users for their valuable feedback  
+- Contributors for their hard work  
 
 ---
 
-**开始使用 GoodsMart WMS，体验专业级的仓库管理解决方案！** 🚀
+**Get started with GoodsMart WMS and experience a professional-grade warehouse management solution!** 🚀
