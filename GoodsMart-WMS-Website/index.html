@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoodsMart WMS — Open Source Warehouse Management System</title>
+<meta name="description" content="A powerful, flexible, and fully open-source warehouse management system built for modern businesses.">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{brand:{purple:'#845ADF','purple-light':'#A78BFA','purple-dark':'#6D3FC4',teal:'#23B7E5','teal-light':'#5CC8EB',green:'#26BF94',surface:'#141625',dark:'#0B0D17'}},fontFamily:{display:['"Outfit"','"Noto Sans JP"','"Noto Sans SC"','sans-serif'],body:['"DM Sans"','"Noto Sans JP"','"Noto Sans SC"','sans-serif']}}}}
+</script>
+<style>
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+@keyframes gradientMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.animated-gradient{background:linear-gradient(135deg,#0B0D17,#1a1040,#0d1a2a,#0B0D17);background-size:400% 400%;animation:gradientMove 15s ease infinite}
+.hero-grid{background-image:linear-gradient(rgba(35,183,229,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(35,183,229,0.04) 1px,transparent 1px);background-size:60px 60px}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}.delay-5{transition-delay:.5s}
+.feature-card{transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+.feature-card:hover{transform:translateY(-4px);border-color:rgba(132,90,223,0.3);box-shadow:0 8px 32px rgba(132,90,223,0.1)}
+.lang-btn.active{background:rgba(132,90,223,0.2);color:#A78BFA}
+.nav-scrolled{background:rgba(11,13,23,0.95)!important;backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.float-slow{animation:float 6s ease-in-out infinite}
+.float-med{animation:float 5s ease-in-out infinite 1s}
+</style>
+</head>
+<body class="bg-brand-dark text-slate-200 font-body">
+
+<!-- ============ NAVIGATION ============ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+  <a href="/" class="flex items-center gap-2.5">
+    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-purple to-brand-teal flex items-center justify-center">
+      <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+    </div>
+    <span class="font-display font-bold text-lg text-white tracking-tight">GoodsMart<span class="text-brand-purple-light"> WMS</span></span>
+  </a>
+  <div class="hidden lg:flex items-center gap-8">
+    <a href="#features" data-i18n="nav.features" class="text-sm text-slate-400 hover:text-white transition-colors">Features</a>
+    <a href="#solutions" data-i18n="nav.solutions" class="text-sm text-slate-400 hover:text-white transition-colors">Solutions</a>
+    <a href="#tech" data-i18n="nav.tech" class="text-sm text-slate-400 hover:text-white transition-colors">Tech Stack</a>
+    <a href="#opensource" data-i18n="nav.opensource" class="text-sm text-slate-400 hover:text-white transition-colors">Open Source</a>
+  </div>
+  <div class="flex items-center gap-3">
+    <div class="flex items-center bg-white/5 rounded-lg p-0.5 text-xs">
+      <button onclick="setLang('en')" class="lang-btn active px-2 py-1 rounded-md transition-all cursor-pointer">EN</button>
+      <button onclick="setLang('ja')" class="lang-btn px-2 py-1 rounded-md transition-all cursor-pointer">JA</button>
+      <button onclick="setLang('zh')" class="lang-btn px-2 py-1 rounded-md transition-all cursor-pointer">ZH</button>
+    </div>
+    <a href="https://github.com/loadstarCN/GoodsMart-WMS" target="_blank" rel="noopener" class="hidden sm:flex items-center gap-1.5 text-sm text-slate-300 hover:text-white transition-colors">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <a href="#quickstart" data-i18n="nav.getStarted" class="hidden sm:block px-4 py-1.5 bg-brand-purple hover:bg-brand-purple-dark text-white text-sm font-medium rounded-lg transition-colors">Get Started</a>
+    <button id="menuBtn" onclick="toggleMenu()" class="lg:hidden p-1.5 text-slate-400 hover:text-white">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</div>
+<div id="mobileMenu" class="hidden lg:hidden bg-brand-dark/95 backdrop-blur-lg border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3">
+    <a href="#features" data-i18n="nav.features" class="text-sm text-slate-400 py-1">Features</a>
+    <a href="#solutions" data-i18n="nav.solutions" class="text-sm text-slate-400 py-1">Solutions</a>
+    <a href="#tech" data-i18n="nav.tech" class="text-sm text-slate-400 py-1">Tech Stack</a>
+    <a href="#opensource" data-i18n="nav.opensource" class="text-sm text-slate-400 py-1">Open Source</a>
+    <a href="#quickstart" data-i18n="nav.getStarted" class="mt-2 px-4 py-2 bg-brand-purple text-white text-sm font-medium rounded-lg text-center">Get Started</a>
+  </div>
+</div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="relative min-h-screen flex items-center animated-gradient overflow-hidden">
+<div class="absolute inset-0 hero-grid"></div>
+<div class="absolute top-20 right-[15%] w-72 h-72 bg-brand-purple/20 rounded-full blur-[100px] float-slow"></div>
+<div class="absolute bottom-32 left-[10%] w-96 h-96 bg-brand-teal/10 rounded-full blur-[120px] float-med"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-purple/5 rounded-full blur-[80px]"></div>
+<div class="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16">
+  <div class="max-w-3xl">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple-light text-xs font-medium mb-8">
+      <span class="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse"></span>
+      <span data-i18n="hero.badge">Open Source WMS</span>
+    </div>
+    <h1 class="font-display font-800 text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[1.08] tracking-tight mb-6">
+      <span data-i18n="hero.title1">Warehouse Management,</span><br>
+      <span class="bg-gradient-to-r from-brand-purple-light to-brand-teal bg-clip-text text-transparent" data-i18n="hero.title2">Reimagined.</span>
+    </h1>
+    <p class="text-base sm:text-lg text-slate-400 leading-relaxed max-w-xl mb-10" data-i18n="hero.subtitle">A powerful, flexible, and fully open-source warehouse management system built for modern businesses. Manage inventory, streamline operations, and scale with confidence.</p>
+    <div class="flex flex-wrap gap-4">
+      <a href="#quickstart" class="px-6 py-3 bg-gradient-to-r from-brand-purple to-brand-purple-dark text-white font-semibold rounded-xl shadow-lg shadow-brand-purple/25 hover:shadow-brand-purple/40 transition-all hover:-translate-y-0.5" data-i18n="hero.demo">Live Demo</a>
+      <a href="https://github.com/loadstarCN/GoodsMart-WMS" target="_blank" rel="noopener" class="px-6 py-3 border border-white/15 text-white font-semibold rounded-xl hover:bg-white/5 transition-all flex items-center gap-2">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <span data-i18n="hero.github">View on GitHub</span>
+      </a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ STATS BAR ============ -->
+<div class="relative z-10 bg-brand-surface border-y border-white/5">
+<div class="max-w-7xl mx-auto px-6 py-5 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+  <div><span class="block font-display font-bold text-2xl text-white">15+</span><span class="text-xs text-slate-500" data-i18n="stats.modules">Functional Modules</span></div>
+  <div><span class="block font-display font-bold text-2xl text-white">3</span><span class="text-xs text-slate-500" data-i18n="stats.languages">Languages Supported</span></div>
+  <div><span class="block font-display font-bold text-2xl text-white">100%</span><span class="text-xs text-slate-500" data-i18n="stats.opensource">Open Source</span></div>
+  <div><span class="block font-display font-bold text-2xl text-white">RESTful</span><span class="text-xs text-slate-500" data-i18n="stats.api">API Architecture</span></div>
+</div>
+</div>
+
+<!-- ============ FEATURES ============ -->
+<section id="features" class="py-20 md:py-28 bg-brand-dark">
+<div class="max-w-7xl mx-auto px-6">
+  <div class="text-center mb-16 reveal">
+    <span class="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple-light text-xs font-medium mb-4" data-i18n="features.badge">Core Features</span>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="features.title">Everything You Need to Run a Warehouse</h2>
+    <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="features.subtitle">From receiving to shipping, GoodsMart WMS covers every step of your warehouse operations with powerful, integrated modules.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <!-- Feature 1 -->
+    <div class="feature-card reveal delay-1 group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+      <div class="absolute top-4 right-4 font-display font-bold text-5xl text-white/[0.03]">01</div>
+      <div class="w-10 h-10 rounded-xl bg-brand-purple/10 flex items-center justify-center mb-4 group-hover:bg-brand-purple/20 transition-colors">
+        <svg class="w-5 h-5 text-brand-purple-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      </div>
+      <h3 class="font-display font-semibold text-white mb-2" data-i18n="f1.title">Real-time Inventory</h3>
+      <p class="text-sm text-slate-400 leading-relaxed" data-i18n="f1.desc">Track stock levels, locations, and movements in real time with automated alerts and snapshots.</p>
+    </div>
+    <!-- Feature 2 -->
+    <div class="feature-card reveal delay-2 group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+      <div class="absolute top-4 right-4 font-display font-bold text-5xl text-white/[0.03]">02</div>
+      <div class="w-10 h-10 rounded-xl bg-brand-teal/10 flex items-center justify-center mb-4 group-hover:bg-brand-teal/20 transition-colors">
+        <svg class="w-5 h-5 text-brand-teal-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+      </div>
+      <h3 class="font-display font-semibold text-white mb-2" data-i18n="f2.title">Inbound Processing</h3>
+      <p class="text-sm text-slate-400 leading-relaxed" data-i18n="f2.desc">Manage ASN receiving, quality inspection, and intelligent putaway with barcode support.</p>
+    </div>
+    <!-- Feature 3 -->
+    <div class="feature-card reveal delay-3 group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+      <div class="absolute top-4 right-4 font-display font-bold text-5xl text-white/[0.03]">03</div>
+      <div class="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center mb-4 group-hover:bg-brand-green/20 transition-colors">
+        <svg class="w-5 h-5 text-brand-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+      </div>
+      <h3 class="font-display font-semibold text-white mb-2" data-i18n="f3.title">Outbound Processing</h3>
+      <p class="text-sm text-slate-400 leading-relaxed" data-i18n="f3.desc">Handle delivery orders, wave picking, packing, and sorting with optimized workflows.</p>
+    </div>
+    <!-- Feature 4 -->
+    <div class="feature-card reveal delay-1 group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+      <div class="absolute top-4 right-4 font-display font-bold text-5xl text-white/[0.03]">04</div>
+      <div class="w-10 h-10 rounded-xl bg-brand-purple/10 flex items-center justify-center mb-4 group-hover:bg-brand-purple/20 transition-colors">
+        <svg class="w-5 h-5 text-brand-purple-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M3 21V8l5-5 5 5v13m0 0V12l4-3 4 3v9M7 17h2M7 13h2M17 17h2"/></svg>
+      </div>
+      <h3 class="font-display font-semibold text-white mb-2" data-i18n="f4.title">Multi-Warehouse</h3>
+      <p class="text-sm text-slate-400 leading-relaxed" data-i18n="f4.desc">Manage multiple warehouses, zones, and bin locations from a single unified platform.</p>
+    </div>
+    <!-- Feature 5 -->
+    <div class="feature-card reveal delay-2 group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+      <div class="absolute top-4 right-4 font-display font-bold text-5xl text-white/[0.03]">05</div>
+      <div class="w-10 h-10 rounded-xl bg-brand-teal/10 flex items-center justify-center mb-4 group-hover:bg-brand-teal/20 transition-colors">
+        <svg class="w-5 h-5 text-brand-teal-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      </div>
+      <h3 class="font-display font-semibold text-white mb-2" data-i18n="f5.title">Access Control</h3>
+      <p class="text-sm text-slate-400 leading-relaxed" data-i18n="f5.desc">Role-based permissions, JWT authentication, and API key management for secure operations.</p>
+    </div>
+    <!-- Feature 6 -->
+    <div class="feature-card reveal delay-3 group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] relative overflow-hidden">
+      <div class="absolute top-4 right-4 font-display font-bold text-5xl text-white/[0.03]">06</div>
+      <div class="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center mb-4 group-hover:bg-brand-green/20 transition-colors">
+        <svg class="w-5 h-5 text-brand-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18M7 16l4-4 4 4 5-6"/></svg>
+      </div>
+      <h3 class="font-display font-semibold text-white mb-2" data-i18n="f6.title">Analytics & Dashboards</h3>
+      <p class="text-sm text-slate-400 leading-relaxed" data-i18n="f6.desc">Interactive charts, inventory snapshots, and operational reports for data-driven decisions.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ WORKFLOW ============ -->
+<section id="workflow" class="py-20 md:py-28 bg-brand-surface">
+<div class="max-w-7xl mx-auto px-6">
+  <div class="text-center mb-16 reveal">
+    <span class="inline-block px-3 py-1 rounded-full bg-brand-teal/10 border border-brand-teal/20 text-brand-teal text-xs font-medium mb-4" data-i18n="wf.badge">Workflow</span>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="wf.title">From Dock to Delivery</h2>
+    <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="wf.subtitle">Streamlined warehouse operations in five simple steps.</p>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+    <div class="reveal delay-1 text-center p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="w-12 h-12 mx-auto rounded-full bg-brand-purple/10 flex items-center justify-center mb-3">
+        <span class="font-display font-bold text-brand-purple-light">01</span>
+      </div>
+      <h3 class="font-display font-semibold text-white text-sm mb-1" data-i18n="wf1.title">Receive</h3>
+      <p class="text-xs text-slate-500" data-i18n="wf1.desc">Verify goods against ASN documents</p>
+    </div>
+    <div class="reveal delay-2 text-center p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="w-12 h-12 mx-auto rounded-full bg-brand-purple/10 flex items-center justify-center mb-3">
+        <span class="font-display font-bold text-brand-purple-light">02</span>
+      </div>
+      <h3 class="font-display font-semibold text-white text-sm mb-1" data-i18n="wf2.title">Store</h3>
+      <p class="text-xs text-slate-500" data-i18n="wf2.desc">Assign locations and put away items</p>
+    </div>
+    <div class="reveal delay-3 text-center p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="w-12 h-12 mx-auto rounded-full bg-brand-teal/10 flex items-center justify-center mb-3">
+        <span class="font-display font-bold text-brand-teal">03</span>
+      </div>
+      <h3 class="font-display font-semibold text-white text-sm mb-1" data-i18n="wf3.title">Pick</h3>
+      <p class="text-xs text-slate-500" data-i18n="wf3.desc">Optimized picking routes for orders</p>
+    </div>
+    <div class="reveal delay-4 text-center p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="w-12 h-12 mx-auto rounded-full bg-brand-teal/10 flex items-center justify-center mb-3">
+        <span class="font-display font-bold text-brand-teal">04</span>
+      </div>
+      <h3 class="font-display font-semibold text-white text-sm mb-1" data-i18n="wf4.title">Pack</h3>
+      <p class="text-xs text-slate-500" data-i18n="wf4.desc">Pack, label, and prepare shipments</p>
+    </div>
+    <div class="reveal delay-5 text-center p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="w-12 h-12 mx-auto rounded-full bg-brand-green/10 flex items-center justify-center mb-3">
+        <span class="font-display font-bold text-brand-green">05</span>
+      </div>
+      <h3 class="font-display font-semibold text-white text-sm mb-1" data-i18n="wf5.title">Ship</h3>
+      <p class="text-xs text-slate-500" data-i18n="wf5.desc">Dispatch with carrier tracking</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ SOLUTIONS ============ -->
+<section id="solutions" class="py-20 md:py-28 bg-brand-dark">
+<div class="max-w-7xl mx-auto px-6">
+  <div class="text-center mb-16 reveal">
+    <span class="inline-block px-3 py-1 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-green text-xs font-medium mb-4" data-i18n="sol.badge">Solutions</span>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="sol.title">Built for Every Industry</h2>
+    <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="sol.subtitle">Adaptable warehouse management for diverse business needs.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div class="feature-card reveal delay-1 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex gap-4">
+      <div class="w-10 h-10 shrink-0 rounded-xl bg-brand-purple/10 flex items-center justify-center">
+        <svg class="w-5 h-5 text-brand-purple-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div>
+        <h3 class="font-display font-semibold text-white mb-1" data-i18n="s1.title">Manufacturing</h3>
+        <p class="text-sm text-slate-400" data-i18n="s1.desc">Track raw materials, WIP inventory, and finished goods across production lines.</p>
+      </div>
+    </div>
+    <div class="feature-card reveal delay-2 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex gap-4">
+      <div class="w-10 h-10 shrink-0 rounded-xl bg-brand-teal/10 flex items-center justify-center">
+        <svg class="w-5 h-5 text-brand-teal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+      </div>
+      <div>
+        <h3 class="font-display font-semibold text-white mb-1" data-i18n="s2.title">Retail & E-commerce</h3>
+        <p class="text-sm text-slate-400" data-i18n="s2.desc">Manage multi-channel inventory with real-time stock synchronization.</p>
+      </div>
+    </div>
+    <div class="feature-card reveal delay-3 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex gap-4">
+      <div class="w-10 h-10 shrink-0 rounded-xl bg-brand-green/10 flex items-center justify-center">
+        <svg class="w-5 h-5 text-brand-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div>
+        <h3 class="font-display font-semibold text-white mb-1" data-i18n="s3.title">Logistics & 3PL</h3>
+        <p class="text-sm text-slate-400" data-i18n="s3.desc">Handle multi-client warehousing with isolated inventory and billing.</p>
+      </div>
+    </div>
+    <div class="feature-card reveal delay-4 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex gap-4">
+      <div class="w-10 h-10 shrink-0 rounded-xl bg-brand-purple/10 flex items-center justify-center">
+        <svg class="w-5 h-5 text-brand-purple-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
+      </div>
+      <div>
+        <h3 class="font-display font-semibold text-white mb-1" data-i18n="s4.title">Healthcare</h3>
+        <p class="text-sm text-slate-400" data-i18n="s4.desc">Manage pharmaceutical inventory with lot tracking and expiry management.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ TECH STACK ============ -->
+<section id="tech" class="py-20 md:py-28 bg-brand-surface">
+<div class="max-w-7xl mx-auto px-6">
+  <div class="text-center mb-16 reveal">
+    <span class="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple-light text-xs font-medium mb-4" data-i18n="tech.badge">Tech Stack</span>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="tech.title">Modern Architecture, Battle-Tested Tools</h2>
+    <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="tech.subtitle">Built with proven technologies for reliability, performance, and developer experience.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+    <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <h3 class="font-display font-semibold text-white mb-4 flex items-center gap-2" data-i18n="tech.backend">
+        <span class="w-2 h-2 rounded-full bg-brand-purple"></span>Backend
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Python</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Flask</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">PostgreSQL</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Redis</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">SQLAlchemy</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">JWT</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">MQTT</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Gunicorn</span>
+      </div>
+    </div>
+    <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <h3 class="font-display font-semibold text-white mb-4 flex items-center gap-2" data-i18n="tech.frontend">
+        <span class="w-2 h-2 rounded-full bg-brand-teal"></span>Frontend
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Nuxt 4</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Vue 3</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">TypeScript</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Vuetify 3</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">Pinia</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">i18n</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">ApexCharts</span>
+        <span class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/[0.08] text-sm text-slate-300">ECharts</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ OPEN SOURCE ============ -->
+<section id="opensource" class="py-20 md:py-28 bg-brand-dark relative overflow-hidden">
+<div class="absolute inset-0 hero-grid opacity-50"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-purple/5 rounded-full blur-[120px]"></div>
+<div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+  <div class="reveal">
+    <span class="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/20 text-brand-purple-light text-xs font-medium mb-4" data-i18n="os.badge">Open Source</span>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="os.title">Built by the Community, for the Community</h2>
+    <p class="text-slate-400 max-w-2xl mx-auto mb-10" data-i18n="os.subtitle">GoodsMart WMS is proudly open source under AGPLv3. Join our growing community of contributors and help shape the future of warehouse management.</p>
+    <a href="https://github.com/loadstarCN/GoodsMart-WMS" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-brand-purple to-brand-purple-dark text-white font-semibold rounded-xl shadow-lg shadow-brand-purple/25 hover:shadow-brand-purple/40 transition-all hover:-translate-y-0.5">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      <span data-i18n="os.cta">Star on GitHub</span>
+    </a>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-14 reveal">
+    <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="font-display font-bold text-xl text-white mb-1">AGPLv3</div>
+      <p class="text-xs text-slate-500" data-i18n="os.license">Free & Open License</p>
+    </div>
+    <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="font-display font-bold text-xl text-white mb-1">EN / JA / ZH</div>
+      <p class="text-xs text-slate-500" data-i18n="os.i18n">Internationalized</p>
+    </div>
+    <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+      <div class="font-display font-bold text-xl text-white mb-1">RESTful</div>
+      <p class="text-xs text-slate-500" data-i18n="os.apiInfo">Full API Documentation</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ QUICK START ============ -->
+<section id="quickstart" class="py-20 md:py-28 bg-brand-surface">
+<div class="max-w-7xl mx-auto px-6">
+  <div class="text-center mb-12 reveal">
+    <span class="inline-block px-3 py-1 rounded-full bg-brand-teal/10 border border-brand-teal/20 text-brand-teal text-xs font-medium mb-4" data-i18n="qs.badge">Quick Start</span>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="qs.title">Up and Running in Minutes</h2>
+    <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="qs.subtitle">Get the backend and frontend running with just a few commands.</p>
+  </div>
+  <div class="max-w-2xl mx-auto reveal">
+    <div class="rounded-2xl bg-[#080B10] border border-white/[0.06] overflow-hidden">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
+        <div class="flex gap-1.5">
+          <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+          <span class="w-3 h-3 rounded-full bg-[#FFBD2E]"></span>
+          <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+        </div>
+        <button onclick="copyCode()" id="copyBtn" class="text-xs text-slate-500 hover:text-slate-300 transition-colors px-2 py-0.5 rounded border border-white/[0.08] hover:border-white/20" data-i18n-copy="qs.copy">Copy</button>
+      </div>
+      <div class="p-5 overflow-x-auto">
+        <pre id="codeBlock" class="font-mono text-sm leading-loose text-slate-400"><span class="text-slate-600"># Clone the repositories</span>
+<span class="text-brand-purple-light">git</span> clone https://github.com/loadstarCN/GoodsMart-WMS-Backend.git
+<span class="text-brand-purple-light">git</span> clone https://github.com/loadstarCN/GoodsMart-WMS-Web.git
+
+<span class="text-slate-600"># Start the backend</span>
+<span class="text-brand-purple-light">cd</span> GoodsMart-WMS-Backend
+<span class="text-brand-purple-light">pip</span> install -r requirements.txt
+<span class="text-brand-purple-light">flask</span> run
+
+<span class="text-slate-600"># Start the frontend</span>
+<span class="text-brand-purple-light">cd</span> ../GoodsMart-WMS-Web
+<span class="text-brand-purple-light">npm</span> install && <span class="text-brand-purple-light">npm</span> run dev</pre>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="py-20 md:py-28 bg-brand-dark">
+<div class="max-w-7xl mx-auto px-6">
+  <div class="text-center mb-12 reveal">
+    <span class="inline-block px-3 py-1 rounded-full bg-brand-green/10 border border-brand-green/20 text-brand-green text-xs font-medium mb-4">FAQ</span>
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="faq.title">Frequently Asked Questions</h2>
+  </div>
+  <div class="max-w-2xl mx-auto flex flex-col gap-3 reveal">
+    <div class="faq-item rounded-xl border border-white/[0.06] overflow-hidden">
+      <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left">
+        <span class="font-display font-semibold text-white text-sm" data-i18n="faq.q1">Is GoodsMart WMS free to use?</span>
+        <svg class="w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400 leading-relaxed" data-i18n="faq.a1">Yes! GoodsMart WMS is fully open source under the AGPL v3 license. You can freely use, modify, and distribute it. For commercial licensing without AGPL obligations, please contact us.</p>
+      </div>
+    </div>
+    <div class="faq-item rounded-xl border border-white/[0.06] overflow-hidden">
+      <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left">
+        <span class="font-display font-semibold text-white text-sm" data-i18n="faq.q2">What are the system requirements?</span>
+        <svg class="w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400 leading-relaxed" data-i18n="faq.a2">Python 3.10+, Node.js 18+, PostgreSQL 13+, and Redis. Works on Linux, macOS, and Windows.</p>
+      </div>
+    </div>
+    <div class="faq-item rounded-xl border border-white/[0.06] overflow-hidden">
+      <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left">
+        <span class="font-display font-semibold text-white text-sm" data-i18n="faq.q3">Does it support multiple warehouses?</span>
+        <svg class="w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400 leading-relaxed" data-i18n="faq.a3">Yes. You can manage multiple warehouses with independent locations, inventory, and staff permissions from a single instance.</p>
+      </div>
+    </div>
+    <div class="faq-item rounded-xl border border-white/[0.06] overflow-hidden">
+      <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left">
+        <span class="font-display font-semibold text-white text-sm" data-i18n="faq.q4">How can I contribute?</span>
+        <svg class="w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400 leading-relaxed" data-i18n="faq.a4">Check our Contributing Guide on GitHub. We welcome code contributions, bug reports, documentation improvements, and translations.</p>
+      </div>
+    </div>
+    <div class="faq-item rounded-xl border border-white/[0.06] overflow-hidden">
+      <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left">
+        <span class="font-display font-semibold text-white text-sm" data-i18n="faq.q5">Is there a mobile app?</span>
+        <svg class="w-4 h-4 text-slate-500 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="faq-answer hidden px-5 pb-5">
+        <p class="text-sm text-slate-400 leading-relaxed" data-i18n="faq.a5">A mobile companion app is currently in development. Stay tuned for updates!</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="py-20 md:py-28 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-brand-purple-dark via-brand-purple to-brand-purple-light"></div>
+<div class="absolute inset-0 hero-grid opacity-30"></div>
+<div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+  <div class="reveal">
+    <h2 class="font-display font-bold text-3xl md:text-4xl text-white mb-4" data-i18n="cta.title">Ready to Transform Your Warehouse?</h2>
+    <p class="text-white/80 max-w-xl mx-auto mb-8" data-i18n="cta.subtitle">Get started with GoodsMart WMS today and experience professional-grade warehouse management.</p>
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <a href="#quickstart" class="px-8 py-3.5 bg-white text-brand-purple-dark font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5" data-i18n="cta.start">Get Started Free</a>
+      <a href="mailto:goodsmart@goodsmart.jp" class="px-8 py-3.5 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-all" data-i18n="cta.contact">Contact Us</a>
+    </div>
+    <p class="mt-6 text-sm text-white/50">goodsmart@goodsmart.jp</p>
+  </div>
+</div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="py-10 bg-brand-surface border-t border-white/5">
+<div class="max-w-7xl mx-auto px-6">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-2.5">
+      <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-purple to-brand-teal flex items-center justify-center">
+        <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      </div>
+      <span class="font-display font-semibold text-sm text-white">GoodsMart WMS</span>
+    </div>
+    <div class="flex items-center gap-6 text-xs text-slate-500">
+      <a href="docs.html" class="hover:text-slate-300 transition-colors" data-i18n="ft.docs">Documentation</a>
+      <a href="https://github.com/loadstarCN/GoodsMart-WMS" target="_blank" rel="noopener" class="hover:text-slate-300 transition-colors">GitHub</a>
+      <a href="https://github.com/loadstarCN/GoodsMart-WMS/issues" target="_blank" rel="noopener" class="hover:text-slate-300 transition-colors" data-i18n="ft.issues">Issues</a>
+      <a href="https://github.com/loadstarCN/GoodsMart-WMS/blob/main/LICENSE" target="_blank" rel="noopener" class="hover:text-slate-300 transition-colors" data-i18n="ft.license">License</a>
+    </div>
+    <p class="text-xs text-slate-600">&copy; 2026 GoodsMart. All rights reserved.</p>
+  </div>
+</div>
+</footer>
+
+<script>
+const I={
+en:{
+'nav.features':'Features','nav.solutions':'Solutions','nav.tech':'Tech Stack','nav.opensource':'Open Source','nav.getStarted':'Get Started',
+'hero.badge':'Open Source WMS','hero.title1':'Warehouse Management,','hero.title2':'Reimagined.','hero.subtitle':'A powerful, flexible, and fully open-source warehouse management system built for modern businesses. Manage inventory, streamline operations, and scale with confidence.','hero.demo':'Live Demo','hero.github':'View on GitHub',
+'stats.modules':'Functional Modules','stats.languages':'Languages Supported','stats.opensource':'Open Source','stats.api':'API Architecture',
+'features.badge':'Core Features','features.title':'Everything You Need to Run a Warehouse','features.subtitle':'From receiving to shipping, GoodsMart WMS covers every step of your warehouse operations with powerful, integrated modules.',
+'f1.title':'Real-time Inventory','f1.desc':'Track stock levels, locations, and movements in real time with automated alerts and snapshots.',
+'f2.title':'Inbound Processing','f2.desc':'Manage ASN receiving, quality inspection, and intelligent putaway with barcode support.',
+'f3.title':'Outbound Processing','f3.desc':'Handle delivery orders, wave picking, packing, and sorting with optimized workflows.',
+'f4.title':'Multi-Warehouse','f4.desc':'Manage multiple warehouses, zones, and bin locations from a single unified platform.',
+'f5.title':'Access Control','f5.desc':'Role-based permissions, JWT authentication, and API key management for secure operations.',
+'f6.title':'Analytics & Dashboards','f6.desc':'Interactive charts, inventory snapshots, and operational reports for data-driven decisions.',
+'wf.badge':'Workflow','wf.title':'From Dock to Delivery','wf.subtitle':'Streamlined warehouse operations in five simple steps.',
+'wf1.title':'Receive','wf1.desc':'Verify goods against ASN documents',
+'wf2.title':'Store','wf2.desc':'Assign locations and put away items',
+'wf3.title':'Pick','wf3.desc':'Optimized picking routes for orders',
+'wf4.title':'Pack','wf4.desc':'Pack, label, and prepare shipments',
+'wf5.title':'Ship','wf5.desc':'Dispatch with carrier tracking',
+'sol.badge':'Solutions','sol.title':'Built for Every Industry','sol.subtitle':'Adaptable warehouse management for diverse business needs.',
+'s1.title':'Manufacturing','s1.desc':'Track raw materials, WIP inventory, and finished goods across production lines.',
+'s2.title':'Retail & E-commerce','s2.desc':'Manage multi-channel inventory with real-time stock synchronization.',
+'s3.title':'Logistics & 3PL','s3.desc':'Handle multi-client warehousing with isolated inventory and billing.',
+'s4.title':'Healthcare','s4.desc':'Manage pharmaceutical inventory with lot tracking and expiry management.',
+'tech.badge':'Tech Stack','tech.title':'Modern Architecture, Battle-Tested Tools','tech.subtitle':'Built with proven technologies for reliability, performance, and developer experience.','tech.backend':'Backend','tech.frontend':'Frontend',
+'os.badge':'Open Source','os.title':'Built by the Community, for the Community','os.subtitle':'GoodsMart WMS is proudly open source under AGPLv3. Join our growing community of contributors and help shape the future of warehouse management.','os.cta':'Star on GitHub','os.license':'Free & Open License','os.i18n':'Internationalized','os.apiInfo':'Full API Documentation',
+'ft.docs':'Documentation','ft.issues':'Issues','ft.license':'License',
+'qs.badge':'Quick Start','qs.title':'Up and Running in Minutes','qs.subtitle':'Get the backend and frontend running with just a few commands.','qs.copy':'Copy',
+'faq.title':'Frequently Asked Questions',
+'faq.q1':'Is GoodsMart WMS free to use?','faq.a1':'Yes! GoodsMart WMS is fully open source under the AGPL v3 license. You can freely use, modify, and distribute it. For commercial licensing without AGPL obligations, please contact us.',
+'faq.q2':'What are the system requirements?','faq.a2':'Python 3.10+, Node.js 18+, PostgreSQL 13+, and Redis. Works on Linux, macOS, and Windows.',
+'faq.q3':'Does it support multiple warehouses?','faq.a3':'Yes. You can manage multiple warehouses with independent locations, inventory, and staff permissions from a single instance.',
+'faq.q4':'How can I contribute?','faq.a4':'Check our Contributing Guide on GitHub. We welcome code contributions, bug reports, documentation improvements, and translations.',
+'faq.q5':'Is there a mobile app?','faq.a5':'A mobile companion app is currently in development. Stay tuned for updates!',
+'cta.title':'Ready to Transform Your Warehouse?','cta.subtitle':'Get started with GoodsMart WMS today and experience professional-grade warehouse management.','cta.start':'Get Started Free','cta.contact':'Contact Us'
+},
+ja:{
+'nav.features':'機能','nav.solutions':'ソリューション','nav.tech':'技術スタック','nav.opensource':'オープンソース','nav.getStarted':'始める',
+'hero.badge':'オープンソース WMS','hero.title1':'倉庫管理を、','hero.title2':'再定義する。','hero.subtitle':'現代のビジネス向けに構築された、強力で柔軟な完全オープンソースの倉庫管理システム。在庫管理、業務効率化、そしてスケーリングを実現します。','hero.demo':'ライブデモ','hero.github':'GitHubで見る',
+'stats.modules':'機能モジュール','stats.languages':'対応言語','stats.opensource':'オープンソース','stats.api':'API アーキテクチャ',
+'features.badge':'コア機能','features.title':'倉庫運営に必要なすべてを','features.subtitle':'入荷から出荷まで、GoodsMart WMS は倉庫業務のすべてのステップを強力な統合モジュールでカバーします。',
+'f1.title':'リアルタイム在庫','f1.desc':'在庫レベル、ロケーション、移動をリアルタイムで追跡。自動アラートとスナップショット機能付き。',
+'f2.title':'入荷処理','f2.desc':'ASN受入、品質検査、バーコード対応のインテリジェントな棚入れを管理。',
+'f3.title':'出荷処理','f3.desc':'出荷指示、ウェーブピッキング、梱包、仕分けを最適化されたワークフローで処理。',
+'f4.title':'マルチ倉庫','f4.desc':'複数の倉庫、ゾーン、棚位置を単一のプラットフォームで一元管理。',
+'f5.title':'アクセス制御','f5.desc':'ロールベースの権限管理、JWT認証、APIキー管理でセキュアな運用を実現。',
+'f6.title':'分析・ダッシュボード','f6.desc':'インタラクティブなチャート、在庫スナップショット、運用レポートでデータ駆動型の意思決定を支援。',
+'wf.badge':'ワークフロー','wf.title':'入荷から配送まで','wf.subtitle':'5つのシンプルなステップで倉庫業務を効率化。',
+'wf1.title':'入荷','wf1.desc':'ASN書類と照合して検品',
+'wf2.title':'保管','wf2.desc':'棚位置を割り当て格納',
+'wf3.title':'ピッキング','wf3.desc':'最適化されたルートで商品をピック',
+'wf4.title':'梱包','wf4.desc':'梱包・ラベリングし出荷準備',
+'wf5.title':'出荷','wf5.desc':'配送業者と連携し追跡管理',
+'sol.badge':'ソリューション','sol.title':'あらゆる業界に対応','sol.subtitle':'多様なビジネスニーズに適応する倉庫管理。',
+'s1.title':'製造業','s1.desc':'生産ライン全体で原材料、仕掛品、完成品の在庫を追跡。',
+'s2.title':'小売・EC','s2.desc':'マルチチャネル在庫をリアルタイムの在庫同期で管理。',
+'s3.title':'物流・3PL','s3.desc':'クライアント別の在庫分離と課金で複数クライアント倉庫を運営。',
+'s4.title':'医療','s4.desc':'ロット追跡と有効期限管理で医薬品在庫を管理。',
+'tech.badge':'技術スタック','tech.title':'モダンなアーキテクチャ、実績あるツール','tech.subtitle':'信頼性、パフォーマンス、開発体験のために実績ある技術で構築。','tech.backend':'バックエンド','tech.frontend':'フロントエンド',
+'os.badge':'オープンソース','os.title':'コミュニティによる、コミュニティのための開発','os.subtitle':'GoodsMart WMSはAGPLv3ライセンスのオープンソースプロジェクトです。コントリビューターコミュニティに参加し、倉庫管理の未来を共に築きましょう。','os.cta':'GitHubでスター','os.license':'無料・オープンライセンス','os.i18n':'国際化対応','os.apiInfo':'完全なAPIドキュメント',
+'ft.docs':'ドキュメント','ft.issues':'Issue','ft.license':'ライセンス',
+'qs.badge':'クイックスタート','qs.title':'数分で起動','qs.subtitle':'わずかなコマンドでバックエンドとフロントエンドを起動できます。','qs.copy':'コピー',
+'faq.title':'よくある質問',
+'faq.q1':'GoodsMart WMS は無料ですか？','faq.a1':'はい！GoodsMart WMS は AGPL v3 ライセンスの完全オープンソースです。自由に使用、改変、配布できます。AGPL 義務なしの商用ライセンスについてはお問い合わせください。',
+'faq.q2':'システム要件は何ですか？','faq.a2':'Python 3.10+、Node.js 18+、PostgreSQL 13+、Redis が必要です。Linux、macOS、Windows で動作します。',
+'faq.q3':'マルチ倉庫に対応していますか？','faq.a3':'はい。独立したロケーション、在庫、スタッフ権限を持つ複数の倉庫を単一インスタンスで管理できます。',
+'faq.q4':'どのように貢献できますか？','faq.a4':'GitHub の貢献ガイドをご確認ください。コード貢献、バグ報告、ドキュメント改善、翻訳を歓迎します。',
+'faq.q5':'モバイルアプリはありますか？','faq.a5':'モバイルコンパニオンアプリは現在開発中です。アップデートをお楽しみに！',
+'cta.title':'倉庫オペレーションを変革しませんか？','cta.subtitle':'GoodsMart WMS で今すぐプロフェッショナルグレードの倉庫管理を体験しましょう。','cta.start':'無料で始める','cta.contact':'お問い合わせ'
+},
+zh:{
+'nav.features':'功能','nav.solutions':'解决方案','nav.tech':'技术栈','nav.opensource':'开源','nav.getStarted':'开始使用',
+'hero.badge':'开源 WMS','hero.title1':'重新定义，','hero.title2':'仓库管理。','hero.subtitle':'一款为现代企业打造的强大、灵活、完全开源的仓库管理系统。轻松管理库存、优化运营流程、自信扩展业务。','hero.demo':'在线演示','hero.github':'查看源码',
+'stats.modules':'功能模块','stats.languages':'支持语言','stats.opensource':'开源','stats.api':'API 架构',
+'features.badge':'核心功能','features.title':'仓库运营所需的一切','features.subtitle':'从收货到发货，GoodsMart WMS 以强大的集成模块覆盖仓库运营的每一个环节。',
+'f1.title':'实时库存','f1.desc':'实时追踪库存水平、存储位置和货物移动，支持自动预警和库存快照。',
+'f2.title':'入库处理','f2.desc':'管理ASN收货、质量检验和智能上架，支持条码扫描。',
+'f3.title':'出库处理','f3.desc':'处理出库单、波次拣货、打包和分拣，采用优化的工作流程。',
+'f4.title':'多仓库管理','f4.desc':'在统一平台上管理多个仓库、区域和库位。',
+'f5.title':'权限控制','f5.desc':'基于角色的权限管理、JWT认证和API密钥管理，确保安全运营。',
+'f6.title':'分析与报表','f6.desc':'交互式图表、库存快照和运营报告，支持数据驱动决策。',
+'wf.badge':'工作流程','wf.title':'从收货到发运','wf.subtitle':'五个简单步骤，高效管理仓库运营。',
+'wf1.title':'收货','wf1.desc':'与ASN单据核对验收',
+'wf2.title':'上架','wf2.desc':'分配库位并系统化入库',
+'wf3.title':'拣货','wf3.desc':'优化拣货路线高效拣选',
+'wf4.title':'打包','wf4.desc':'打包贴标完成出库准备',
+'wf5.title':'发货','wf5.desc':'对接承运商追踪发运',
+'sol.badge':'解决方案','sol.title':'适用于各行各业','sol.subtitle':'灵活适配多元化业务需求的仓库管理方案。',
+'s1.title':'制造业','s1.desc':'追踪生产线上的原材料、在制品和成品库存。',
+'s2.title':'零售与电商','s2.desc':'实时库存同步，管理多渠道库存。',
+'s3.title':'物流与3PL','s3.desc':'支持多客户仓储，独立库存管理与计费。',
+'s4.title':'医疗健康','s4.desc':'批次追踪和效期管理，保障药品库存安全。',
+'tech.badge':'技术栈','tech.title':'现代架构，久经考验','tech.subtitle':'采用成熟技术构建，确保可靠性、性能和开发体验。','tech.backend':'后端','tech.frontend':'前端',
+'os.badge':'开源','os.title':'社区共建，服务社区','os.subtitle':'GoodsMart WMS 基于 AGPLv3 许可证开源。加入我们不断壮大的贡献者社区，共同塑造仓库管理的未来。','os.cta':'在GitHub上Star','os.license':'免费开源许可','os.i18n':'国际化支持','os.apiInfo':'完整API文档',
+'ft.docs':'文档','ft.issues':'问题反馈','ft.license':'许可证',
+'qs.badge':'快速开始','qs.title':'几分钟内即可启动','qs.subtitle':'只需几条命令即可启动后端和前端服务。','qs.copy':'复制',
+'faq.title':'常见问题',
+'faq.q1':'GoodsMart WMS 是免费的吗？','faq.a1':'是的！GoodsMart WMS 在 AGPL v3 许可证下完全开源。您可以自由使用、修改和分发。如需无 AGPL 义务的商业授权，请联系我们。',
+'faq.q2':'系统要求是什么？','faq.a2':'需要 Python 3.10+、Node.js 18+、PostgreSQL 13+ 和 Redis。支持 Linux、macOS 和 Windows。',
+'faq.q3':'支持多仓库吗？','faq.a3':'支持。您可以在单个实例中管理多个仓库，每个仓库拥有独立的库位、库存和人员权限。',
+'faq.q4':'如何参与贡献？','faq.a4':'请查看 GitHub 上的贡献指南。我们欢迎代码贡献、缺陷报告、文档改进和翻译。',
+'faq.q5':'有移动应用吗？','faq.a5':'移动端应用正在开发中，敬请期待！',
+'cta.title':'准备好变革您的仓库运营了吗？','cta.subtitle':'立即开始使用 GoodsMart WMS，体验专业级仓库管理解决方案。','cta.start':'免费开始','cta.contact':'联系我们'
+}
+};
+
+function setLang(lang){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.dataset.i18n;
+    if(I[lang]&&I[lang][k])el.textContent=I[lang][k];
+  });
+  // Also handle copy button
+  document.querySelectorAll('[data-i18n-copy]').forEach(el=>{
+    const k=el.dataset.i18nCopy;
+    if(I[lang]&&I[lang][k])el.textContent=I[lang][k];
+  });
+  document.documentElement.lang=lang==='zh'?'zh-CN':lang==='ja'?'ja':'en';
+  // Update font family for CJK
+  const root=document.documentElement.style;
+  if(lang==='ja') root.setProperty('--cjk-font','"Noto Sans JP",');
+  else if(lang==='zh') root.setProperty('--cjk-font','"Noto Sans SC",');
+  else root.setProperty('--cjk-font','');
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()===lang.toUpperCase());
+  });
+  localStorage.setItem('gm-lang',lang);
+}
+
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+}
+
+// Navbar scroll effect
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('nav-scrolled',window.scrollY>50);
+});
+
+// Close mobile menu on link click
+document.querySelectorAll('#mobileMenu a').forEach(a=>{
+  a.addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('hidden'));
+});
+
+// Scroll reveal
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// FAQ toggle
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  const answer=item.querySelector('.faq-answer');
+  const icon=btn.querySelector('svg');
+  const isOpen=!answer.classList.contains('hidden');
+  // Close all
+  document.querySelectorAll('.faq-item').forEach(fi=>{
+    fi.querySelector('.faq-answer').classList.add('hidden');
+    fi.querySelector('button svg').style.transform='rotate(0deg)';
+  });
+  if(!isOpen){
+    answer.classList.remove('hidden');
+    icon.style.transform='rotate(180deg)';
+  }
+}
+
+// Copy code
+function copyCode(){
+  const code=document.getElementById('codeBlock').textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    const orig=btn.textContent;
+    btn.textContent='Copied!';
+    btn.classList.add('text-brand-green');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('text-brand-green');},2000);
+  });
+}
+
+// Init language: localStorage > browser language > default 'en'
+const savedLang=localStorage.getItem('gm-lang');
+if(savedLang&&I[savedLang]){
+  setLang(savedLang);
+}else{
+  const bLang=(navigator.language||navigator.userLanguage||'en').toLowerCase();
+  const detected=bLang.startsWith('ja')?'ja':bLang.startsWith('zh')?'zh':'en';
+  setLang(detected);
+}
+</script>
+</body>
+</html>

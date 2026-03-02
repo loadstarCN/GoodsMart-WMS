@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation — GoodsMart WMS</title>
+<meta name="description" content="Complete documentation for GoodsMart WMS — installation, configuration, API reference, and deployment guides.">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{brand:{purple:'#845ADF','purple-light':'#A78BFA','purple-dark':'#6D3FC4',teal:'#23B7E5','teal-light':'#5CC8EB',green:'#26BF94',surface:'#141625',dark:'#0B0D17'}},fontFamily:{display:['"Outfit"','"Noto Sans JP"','"Noto Sans SC"','sans-serif'],body:['"DM Sans"','"Noto Sans JP"','"Noto Sans SC"','sans-serif'],mono:['"JetBrains Mono"','monospace']}}}}
+</script>
+<style>
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.sidebar-link{transition:all .2s}
+.sidebar-link:hover,.sidebar-link.active{color:#845ADF;background:rgba(132,90,223,0.08);border-left-color:#845ADF}
+pre{position:relative}
+pre code{display:block;overflow-x:auto;padding:1rem 1.25rem;font-size:.85rem;line-height:1.7}
+.copy-btn{position:absolute;top:.5rem;right:.5rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#94a3b8;border-radius:.375rem;padding:.25rem .5rem;font-size:.75rem;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.copy-btn:hover{background:rgba(255,255,255,.2);color:#e2e8f0}
+.toc-link{transition:color .2s}
+.toc-link:hover{color:#845ADF}
+@media(max-width:1023px){.sidebar{display:none}.sidebar.open{display:block;position:fixed;top:64px;left:0;bottom:0;z-index:40;width:280px;overflow-y:auto;background:#fff;box-shadow:4px 0 24px rgba(0,0,0,.1)}}
+h2[id],h3[id]{scroll-margin-top:80px}
+.alert{border-left:4px solid;padding:1rem 1.25rem;border-radius:0 .5rem .5rem 0;margin:1rem 0}
+.alert-info{border-color:#23B7E5;background:rgba(35,183,229,.06)}
+.alert-warn{border-color:#F5A623;background:rgba(245,166,35,.06)}
+table{width:100%;border-collapse:collapse}
+table th{background:#f1f5f9;text-align:left;font-weight:600}
+table th,table td{padding:.5rem .75rem;border:1px solid #e2e8f0;font-size:.875rem}
+table tr:hover{background:#f8fafc}
+</style>
+</head>
+<body class="font-body text-slate-700 bg-white">
+
+<!-- Navigation -->
+<nav id="topnav" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+<div class="max-w-[1400px] mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+  <a href="index.html" class="flex items-center gap-2">
+    <svg width="32" height="32" viewBox="0 0 200 200" fill="none"><rect width="200" height="200" rx="40" fill="#5f1fe6"/><path d="M60 140V60h25l15 50 15-50h25v80h-20V85l-15 55h-10L80 85v55H60z" fill="#fff"/></svg>
+    <span class="font-display font-bold text-lg text-slate-900">GoodsMart <span class="text-brand-purple">WMS</span></span>
+  </a>
+  <div class="flex items-center gap-3">
+    <!-- Language Switcher -->
+    <div class="flex items-center border border-slate-200 rounded-lg overflow-hidden text-sm">
+      <button onclick="setLang('en')" id="btn-en" class="px-2.5 py-1.5 font-medium transition-colors hover:bg-brand-purple/10">EN</button>
+      <button onclick="setLang('ja')" id="btn-ja" class="px-2.5 py-1.5 font-medium transition-colors hover:bg-brand-purple/10 border-x border-slate-200">JA</button>
+      <button onclick="setLang('zh')" id="btn-zh" class="px-2.5 py-1.5 font-medium transition-colors hover:bg-brand-purple/10">ZH</button>
+    </div>
+    <!-- Mobile sidebar toggle -->
+    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-slate-100">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <!-- Back to Home -->
+    <a href="index.html" class="hidden sm:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-purple transition-colors" data-i18n="nav.home">
+      &larr; Home
+    </a>
+  </div>
+</div>
+</nav>
+
+<!-- Layout: Sidebar + Content -->
+<div class="max-w-[1400px] mx-auto pt-16 flex">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar w-64 shrink-0 border-r border-slate-200 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-6 px-4 hidden lg:block">
+    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3" data-i18n="sb.gettingStarted">Getting Started</p>
+    <a href="#overview" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.overview">Overview</a>
+    <a href="#prerequisites" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.prerequisites">Prerequisites</a>
+    <a href="#quick-start" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.quickStart">Quick Start</a>
+
+    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-5 mb-3" data-i18n="sb.backend">Backend</p>
+    <a href="#backend-setup" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.backendSetup">Backend Setup</a>
+    <a href="#env-config" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.envConfig">Environment Config</a>
+    <a href="#database" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.database">Database</a>
+    <a href="#api-modules" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.apiModules">API Modules</a>
+    <a href="#error-codes" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.errorCodes">Error Codes</a>
+
+    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-5 mb-3" data-i18n="sb.frontend">Frontend</p>
+    <a href="#frontend-setup" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.frontendSetup">Frontend Setup</a>
+    <a href="#frontend-structure" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.frontendStructure">Project Structure</a>
+
+    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-5 mb-3" data-i18n="sb.operations">Operations</p>
+    <a href="#deployment" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.deployment">Deployment</a>
+    <a href="#mqtt" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.mqtt">MQTT Integration</a>
+
+    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mt-5 mb-3" data-i18n="sb.community">Community</p>
+    <a href="#contributing" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.contributing">Contributing</a>
+    <a href="#license" class="sidebar-link block px-3 py-1.5 text-sm rounded-md border-l-2 border-transparent mb-0.5" data-i18n="sb.license">License</a>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 min-w-0 px-6 sm:px-10 py-10 max-w-4xl">
+
+    <!-- Overview -->
+    <section id="overview" class="mb-14">
+      <h1 class="font-display text-3xl sm:text-4xl font-bold text-slate-900 mb-4" data-i18n="doc.title">Documentation</h1>
+      <p class="text-lg text-slate-500 mb-6" data-i18n="doc.subtitle">Complete guide for installing, configuring, and deploying GoodsMart WMS.</p>
+
+      <div class="alert alert-info">
+        <p class="text-sm" data-i18n="doc.overviewNote">GoodsMart WMS is a full-stack warehouse management system consisting of a Flask backend API and a Nuxt.js 4 frontend client. Both components must be deployed together for full functionality.</p>
+      </div>
+
+      <h2 class="font-display text-xl font-semibold text-slate-900 mt-8 mb-4" data-i18n="doc.archTitle">System Architecture</h2>
+      <div class="bg-slate-50 rounded-xl p-6 font-mono text-sm leading-relaxed text-slate-700">
+        <pre class="!bg-transparent !p-0"><code class="!bg-transparent !p-0">GoodsMart WMS Ecosystem
+├── 🖥️ GoodsMart-WMS-Backend    — Flask API Service
+├── 🌐 GoodsMart-WMS-Web        — Nuxt.js 4 Web Client
+├── 📱 GoodsMart-WMS-Mobile     — Mobile App (Coming Soon)
+└── 📚 GoodsMart-Website        — Product Website</code></pre>
+      </div>
+    </section>
+
+    <!-- Prerequisites -->
+    <section id="prerequisites" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.prereqTitle">Prerequisites</h2>
+      <p class="text-slate-600 mb-4" data-i18n="doc.prereqDesc">Ensure the following software is installed before starting:</p>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="border border-slate-200 rounded-lg p-4">
+          <h3 class="font-semibold text-slate-900 mb-2" data-i18n="doc.prereqBackend">Backend Requirements</h3>
+          <ul class="text-sm space-y-1.5 text-slate-600">
+            <li>• Python 3.8+</li>
+            <li>• PostgreSQL 13+</li>
+            <li>• Redis 6.x+</li>
+            <li>• pip</li>
+          </ul>
+        </div>
+        <div class="border border-slate-200 rounded-lg p-4">
+          <h3 class="font-semibold text-slate-900 mb-2" data-i18n="doc.prereqFrontend">Frontend Requirements</h3>
+          <ul class="text-sm space-y-1.5 text-slate-600">
+            <li>• Node.js 18.0.0+</li>
+            <li>• npm / yarn</li>
+            <li>• Git</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section id="quick-start" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.qsTitle">Quick Start</h2>
+      <p class="text-slate-600 mb-6" data-i18n="doc.qsDesc">Get the full system running in minutes with these steps.</p>
+
+      <!-- Step 1 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="w-7 h-7 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shrink-0">1</span>
+          <h3 class="font-semibold text-slate-900" data-i18n="doc.qsStep1">Clone & Set Up Backend</h3>
+        </div>
+        <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="text-slate-300">git clone https://github.com/loadstarCN/GoodsMart-WMS-Backend.git
+cd GoodsMart-WMS-Backend
+python -m venv venv
+source venv/bin/activate      <span class="text-slate-500"># Windows: venv\Scripts\activate</span>
+pip install -r requirements.txt
+cp .env.example .env          <span class="text-slate-500"># Edit .env with your config</span>
+flask db init
+flask db migrate -m "Initial"
+flask db upgrade
+python app.py</code></pre>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="mb-6">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="w-7 h-7 rounded-full bg-brand-purple text-white flex items-center justify-center text-sm font-bold shrink-0">2</span>
+          <h3 class="font-semibold text-slate-900" data-i18n="doc.qsStep2">Clone & Set Up Frontend</h3>
+        </div>
+        <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><code class="text-slate-300">git clone https://github.com/loadstarCN/GoodsMart-WMS-Web.git
+cd GoodsMart-WMS-Web
+npm install
+cp .env.example .env          <span class="text-slate-500"># Set API_BASE_URL=http://localhost:5000</span>
+npm run dev</code></pre>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div>
+        <div class="flex items-center gap-3 mb-3">
+          <span class="w-7 h-7 rounded-full bg-brand-green text-white flex items-center justify-center text-sm font-bold shrink-0">✓</span>
+          <h3 class="font-semibold text-slate-900" data-i18n="doc.qsStep3">Access the Application</h3>
+        </div>
+        <p class="text-slate-600 text-sm ml-10" data-i18n="doc.qsAccess">Open <strong>http://localhost:3000</strong> in your browser. The API runs on <strong>http://localhost:5000</strong>.</p>
+      </div>
+    </section>
+
+    <!-- Backend Setup -->
+    <section id="backend-setup" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.beTitle">Backend Setup</h2>
+
+      <h3 class="font-display text-lg font-semibold text-slate-900 mt-6 mb-3" data-i18n="doc.beTechTitle">Tech Stack</h3>
+      <table class="mb-6">
+        <thead>
+          <tr>
+            <th data-i18n="doc.thComponent">Component</th>
+            <th data-i18n="doc.thTechnology">Technology</th>
+            <th data-i18n="doc.thDescription">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.beFramework">Framework</td><td>Flask 3.1.x</td><td data-i18n="doc.beFrameworkDesc">Python web framework</td></tr>
+          <tr><td data-i18n="doc.beDatabase">Database</td><td>PostgreSQL 13+</td><td data-i18n="doc.beDatabaseDesc">Enterprise relational database</td></tr>
+          <tr><td>ORM</td><td>SQLAlchemy</td><td data-i18n="doc.beORMDesc">Object-relational mapping</td></tr>
+          <tr><td data-i18n="doc.beAuth">Authentication</td><td>JWT + Flask-JWT-Extended</td><td data-i18n="doc.beAuthDesc">Token-based authentication</td></tr>
+          <tr><td data-i18n="doc.beCache">Cache</td><td>Redis 6.x+</td><td data-i18n="doc.beCacheDesc">High-performance caching</td></tr>
+          <tr><td data-i18n="doc.beAPI">API Docs</td><td>OpenAPI / Swagger</td><td data-i18n="doc.beAPIDesc">Interactive API documentation</td></tr>
+          <tr><td>MQTT</td><td>MQTT Protocol</td><td data-i18n="doc.beMQTTDesc">IoT device integration</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="font-display text-lg font-semibold text-slate-900 mt-6 mb-3" data-i18n="doc.beStructTitle">Project Structure</h3>
+      <div class="bg-slate-900 rounded-lg overflow-hidden">
+        <pre><code class="text-slate-300 text-xs sm:text-sm">GoodsMart-WMS-Backend/
+├── app.py                    <span class="text-slate-500"># Application entry</span>
+├── config.py                 <span class="text-slate-500"># Configuration</span>
+├── .env                      <span class="text-slate-500"># Environment variables</span>
+├── requirements.txt          <span class="text-slate-500"># Dependencies</span>
+├── migrations/               <span class="text-slate-500"># DB migrations (Alembic)</span>
+├── extensions/               <span class="text-slate-500"># Flask extensions</span>
+│   ├── db.py, jwt.py, mqtt.py, celery.py
+├── system/                   <span class="text-slate-500"># Core modules</span>
+│   ├── auth/                 <span class="text-slate-500"># Auth &amp; permissions</span>
+│   ├── inventory/            <span class="text-slate-500"># Inventory management</span>
+│   ├── order/                <span class="text-slate-500"># Order management</span>
+│   ├── warehouse/            <span class="text-slate-500"># Warehouse management</span>
+│   └── ...
+├── tasks/                    <span class="text-slate-500"># Celery async tasks</span>
+├── utils/                    <span class="text-slate-500"># Helpers &amp; validators</span>
+└── tests/                    <span class="text-slate-500"># Test suite</span></code></pre>
+      </div>
+    </section>
+
+    <!-- Environment Config -->
+    <section id="env-config" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.envTitle">Environment Configuration</h2>
+      <p class="text-slate-600 mb-4" data-i18n="doc.envDesc">Copy <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> to <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code> and configure the following variables:</p>
+
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300"><span class="text-slate-500"># Application</span>
+<span class="text-brand-teal">FLASK_ENV</span>=development
+<span class="text-brand-teal">FLASK_DEBUG</span>=True
+
+<span class="text-slate-500"># Database</span>
+<span class="text-brand-teal">SQLALCHEMY_DATABASE_URI</span>=postgresql://user:pass@localhost:5432/warehouse_db
+
+<span class="text-slate-500"># JWT</span>
+<span class="text-brand-teal">JWT_SECRET_KEY</span>=your_secure_random_jwt_secret_key
+
+<span class="text-slate-500"># Redis</span>
+<span class="text-brand-teal">REDIS_URL</span>=redis://localhost:6379/0
+
+<span class="text-slate-500"># MQTT (Optional - for IoT)</span>
+<span class="text-brand-teal">MQTT_BROKER_URL</span>=your.mqtt.broker.url
+<span class="text-brand-teal">MQTT_BROKER_PORT</span>=1883
+
+<span class="text-slate-500"># Client</span>
+<span class="text-brand-teal">CLIENT_BASE_URL</span>=http://localhost:3000</code></pre>
+      </div>
+
+      <div class="alert alert-warn mt-4">
+        <p class="text-sm" data-i18n="doc.envWarn">Never commit your <code>.env</code> file to version control. It may contain sensitive credentials.</p>
+      </div>
+    </section>
+
+    <!-- Database -->
+    <section id="database" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.dbTitle">Database Management</h2>
+
+      <div class="space-y-4">
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-2" data-i18n="doc.dbInit">Initialize Migrations</h3>
+          <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code class="text-slate-300">flask db init
+flask db migrate -m "Initial migration"
+flask db upgrade</code></pre>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-2" data-i18n="doc.dbMigrate">Create New Migration</h3>
+          <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code class="text-slate-300">flask db migrate -m "Add new feature"
+flask db upgrade</code></pre>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-2" data-i18n="doc.dbRollback">Rollback Migration</h3>
+          <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre><code class="text-slate-300">flask db downgrade</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Modules -->
+    <section id="api-modules" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.apiTitle">API Modules</h2>
+      <p class="text-slate-600 mb-6" data-i18n="doc.apiDesc">The backend exposes a RESTful API organized into the following modules. Interactive API docs are available at <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">/system/doc</code> (Swagger UI).</p>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="border border-slate-200 rounded-lg p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">🔐</span>
+            <h3 class="font-semibold text-slate-900" data-i18n="doc.apiAuth">Auth & Permissions</h3>
+          </div>
+          <ul class="text-sm space-y-1 text-slate-600">
+            <li data-i18n="doc.apiAuth1">• User registration & login</li>
+            <li data-i18n="doc.apiAuth2">• JWT token management</li>
+            <li data-i18n="doc.apiAuth3">• Role-based access control</li>
+            <li data-i18n="doc.apiAuth4">• Permission management</li>
+          </ul>
+        </div>
+        <div class="border border-slate-200 rounded-lg p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">📦</span>
+            <h3 class="font-semibold text-slate-900" data-i18n="doc.apiInv">Inventory Management</h3>
+          </div>
+          <ul class="text-sm space-y-1 text-slate-600">
+            <li data-i18n="doc.apiInv1">• Product information CRUD</li>
+            <li data-i18n="doc.apiInv2">• Stock queries & adjustments</li>
+            <li data-i18n="doc.apiInv3">• Inventory alerts</li>
+            <li data-i18n="doc.apiInv4">• Batch tracking</li>
+          </ul>
+        </div>
+        <div class="border border-slate-200 rounded-lg p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">📋</span>
+            <h3 class="font-semibold text-slate-900" data-i18n="doc.apiOrder">Order Management</h3>
+          </div>
+          <ul class="text-sm space-y-1 text-slate-600">
+            <li data-i18n="doc.apiOrder1">• Order creation & processing</li>
+            <li data-i18n="doc.apiOrder2">• Status tracking</li>
+            <li data-i18n="doc.apiOrder3">• Shipping management</li>
+            <li data-i18n="doc.apiOrder4">• Returns processing</li>
+          </ul>
+        </div>
+        <div class="border border-slate-200 rounded-lg p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">🏢</span>
+            <h3 class="font-semibold text-slate-900" data-i18n="doc.apiWh">Warehouse Management</h3>
+          </div>
+          <ul class="text-sm space-y-1 text-slate-600">
+            <li data-i18n="doc.apiWh1">• Warehouse CRUD</li>
+            <li data-i18n="doc.apiWh2">• Location management</li>
+            <li data-i18n="doc.apiWh3">• Inventory counting</li>
+            <li data-i18n="doc.apiWh4">• Transfer operations</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Error Codes -->
+    <section id="error-codes" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.errTitle">Error Codes</h2>
+      <p class="text-slate-600 mb-4" data-i18n="doc.errDesc">The API uses a structured error code system for consistent error handling.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="doc.errCat">Category</th>
+            <th data-i18n="doc.errRange">Code Range</th>
+            <th data-i18n="doc.errHttp">HTTP</th>
+            <th data-i18n="doc.errDescCol">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.errGen">General</td><td>10000–10999</td><td>400</td><td data-i18n="doc.errGenDesc">Business logic errors</td></tr>
+          <tr><td data-i18n="doc.errAuth">Authentication</td><td>11000–11999</td><td>401</td><td data-i18n="doc.errAuthDesc">Identity verification failures</td></tr>
+          <tr><td data-i18n="doc.errPerm">Permission</td><td>12000–12999</td><td>403</td><td data-i18n="doc.errPermDesc">Insufficient access</td></tr>
+          <tr><td data-i18n="doc.errRes">Resource</td><td>13000–13999</td><td>404</td><td data-i18n="doc.errResDesc">Resource not found</td></tr>
+          <tr><td data-i18n="doc.errVal">Validation</td><td>14000–14999</td><td>400</td><td data-i18n="doc.errValDesc">Data format / content errors</td></tr>
+          <tr><td data-i18n="doc.errInv">Inventory</td><td>15000–15999</td><td>400</td><td data-i18n="doc.errInvDesc">Stock-related business errors</td></tr>
+          <tr><td data-i18n="doc.errState">State</td><td>16000–16999</td><td>400</td><td data-i18n="doc.errStateDesc">Invalid state transitions</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Frontend Setup -->
+    <section id="frontend-setup" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.feTitle">Frontend Setup</h2>
+
+      <h3 class="font-display text-lg font-semibold text-slate-900 mt-6 mb-3" data-i18n="doc.feTechTitle">Tech Stack</h3>
+      <table class="mb-6">
+        <thead>
+          <tr>
+            <th data-i18n="doc.thComponent">Component</th>
+            <th data-i18n="doc.thTechnology">Technology</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td data-i18n="doc.feFramework">Framework</td><td>Nuxt.js 4 (Vue 3)</td></tr>
+          <tr><td data-i18n="doc.feUI">UI Library</td><td>Bootstrap</td></tr>
+          <tr><td data-i18n="doc.feState">State</td><td>Pinia</td></tr>
+          <tr><td data-i18n="doc.feHTTP">HTTP</td><td>Axios</td></tr>
+          <tr><td data-i18n="doc.feStyle">Styles</td><td>SCSS</td></tr>
+          <tr><td data-i18n="doc.feBuild">Build</td><td>Vite</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="font-display text-lg font-semibold text-slate-900 mt-6 mb-3" data-i18n="doc.feInstTitle">Installation</h3>
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300">git clone https://github.com/loadstarCN/GoodsMart-WMS-Web.git
+cd GoodsMart-WMS-Web
+npm install
+cp .env.example .env</code></pre>
+      </div>
+
+      <p class="text-slate-600 mt-4 mb-2" data-i18n="doc.feEnvDesc">Configure your <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code>:</p>
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300"><span class="text-brand-teal">API_BASE_URL</span>=http://localhost:5000
+<span class="text-brand-teal">NUXT_PUBLIC_ENCRYPTION_KEY</span>=<span class="text-slate-500"># openssl rand -base64 32</span></code></pre>
+      </div>
+
+      <div class="mt-4 space-y-2">
+        <div class="flex items-start gap-2 text-sm">
+          <span class="text-brand-green font-bold mt-0.5">$</span>
+          <div>
+            <code class="font-mono text-slate-900">npm run dev</code>
+            <span class="text-slate-500 ml-2" data-i18n="doc.feDevDesc">— Start development server at localhost:3000</span>
+          </div>
+        </div>
+        <div class="flex items-start gap-2 text-sm">
+          <span class="text-brand-green font-bold mt-0.5">$</span>
+          <div>
+            <code class="font-mono text-slate-900">npm run build</code>
+            <span class="text-slate-500 ml-2" data-i18n="doc.feBuildDesc">— Build for production</span>
+          </div>
+        </div>
+        <div class="flex items-start gap-2 text-sm">
+          <span class="text-brand-green font-bold mt-0.5">$</span>
+          <div>
+            <code class="font-mono text-slate-900">npm run preview</code>
+            <span class="text-slate-500 ml-2" data-i18n="doc.fePreviewDesc">— Preview production build</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Frontend Structure -->
+    <section id="frontend-structure" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.fsTitle">Frontend Project Structure</h2>
+      <div class="bg-slate-900 rounded-lg overflow-hidden">
+        <pre><code class="text-slate-300 text-xs sm:text-sm">GoodsMart-WMS-Web/
+├── assets/          <span class="text-slate-500"># Styles, images</span>
+├── components/      <span class="text-slate-500"># Vue components</span>
+├── composables/     <span class="text-slate-500"># Composable functions</span>
+├── layouts/         <span class="text-slate-500"># Layout components</span>
+├── locales/         <span class="text-slate-500"># i18n translation files</span>
+├── middleware/      <span class="text-slate-500"># Route middleware</span>
+├── pages/           <span class="text-slate-500"># Page components (auto-routing)</span>
+├── plugins/         <span class="text-slate-500"># Nuxt plugins</span>
+├── public/          <span class="text-slate-500"># Static assets</span>
+├── server/          <span class="text-slate-500"># Server middleware</span>
+├── stores/          <span class="text-slate-500"># Pinia stores</span>
+├── types/           <span class="text-slate-500"># TypeScript types</span>
+└── utils/           <span class="text-slate-500"># Utility functions</span></code></pre>
+      </div>
+    </section>
+
+    <!-- Deployment -->
+    <section id="deployment" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.depTitle">Deployment</h2>
+      <p class="text-slate-600 mb-6" data-i18n="doc.depDesc">To deploy the full GoodsMart WMS system, you need: the API service, the web client, PostgreSQL, and Redis.</p>
+
+      <h3 class="font-display text-lg font-semibold text-slate-900 mt-6 mb-3" data-i18n="doc.depBackend">Backend (Gunicorn)</h3>
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300">pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 app:app</code></pre>
+      </div>
+
+      <h3 class="font-display text-lg font-semibold text-slate-900 mt-6 mb-3" data-i18n="doc.depFrontend">Frontend (PM2)</h3>
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300">npm run build
+npm install -g pm2
+pm2 start ecosystem.config.js</code></pre>
+      </div>
+
+      <h3 class="font-display text-lg font-semibold text-slate-900 mt-6 mb-3" data-i18n="doc.depSupervisor">Supervisord Config</h3>
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300"><span class="text-slate-500"># /etc/supervisor/conf.d/wms-api.conf</span>
+[program:wms-api]
+directory=/path/to/GoodsMart-WMS-Backend
+command=gunicorn -w 4 -b 0.0.0.0:5000 app:app
+autostart=true
+autorestart=true
+environment=FLASK_ENV="production"
+user=www-data</code></pre>
+      </div>
+    </section>
+
+    <!-- MQTT -->
+    <section id="mqtt" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.mqttTitle">MQTT Integration</h2>
+      <p class="text-slate-600 mb-4" data-i18n="doc.mqttDesc">GoodsMart WMS supports MQTT for IoT device integration such as barcode scanners and sensors.</p>
+
+      <h3 class="font-semibold text-slate-900 mb-2" data-i18n="doc.mqttSub">Subscribe to Messages</h3>
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative mb-4">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300"><span class="text-brand-purple-light">from</span> extensions <span class="text-brand-purple-light">import</span> mqtt_client
+
+<span class="text-brand-teal">def</span> <span class="text-white">handle_sensor_data</span>(topic, payload):
+    print(<span class="text-brand-green">f"Received from {topic}: {payload}"</span>)
+
+mqtt_client.subscribe(<span class="text-brand-green">'sensors/#'</span>, handle_sensor_data)</code></pre>
+      </div>
+
+      <h3 class="font-semibold text-slate-900 mb-2" data-i18n="doc.mqttPub">Publish Messages</h3>
+      <div class="bg-slate-900 rounded-lg overflow-hidden relative">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code class="text-slate-300"><span class="text-brand-purple-light">from</span> extensions <span class="text-brand-purple-light">import</span> mqtt_client
+
+mqtt_client.publish(
+    <span class="text-brand-green">'devices/light/control'</span>,
+    {<span class="text-brand-green">'action'</span>: <span class="text-brand-green">'on'</span>, <span class="text-brand-green">'duration'</span>: 30}
+)</code></pre>
+      </div>
+    </section>
+
+    <!-- Contributing -->
+    <section id="contributing" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.contTitle">Contributing</h2>
+      <p class="text-slate-600 mb-4" data-i18n="doc.contDesc">We welcome contributions of all kinds! Here's how to get started:</p>
+
+      <ol class="list-decimal list-inside space-y-2 text-slate-700 text-sm">
+        <li data-i18n="doc.contStep1">Fork the repository on GitHub</li>
+        <li data-i18n="doc.contStep2">Create a feature branch: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git checkout -b feature/AmazingFeature</code></li>
+        <li data-i18n="doc.contStep3">Commit your changes: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git commit -m 'Add AmazingFeature'</code></li>
+        <li data-i18n="doc.contStep4">Push to your branch: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git push origin feature/AmazingFeature</code></li>
+        <li data-i18n="doc.contStep5">Open a Pull Request</li>
+      </ol>
+
+      <div class="flex flex-wrap gap-3 mt-6">
+        <a href="https://github.com/loadstarCN/GoodsMart-WMS/issues" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium hover:border-brand-purple hover:text-brand-purple transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16"><path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/><path d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"/></svg>
+          <span data-i18n="doc.contIssue">Report an Issue</span>
+        </a>
+        <a href="https://github.com/loadstarCN/GoodsMart-WMS/discussions" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium hover:border-brand-purple hover:text-brand-purple transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0z"/></svg>
+          <span data-i18n="doc.contDiscuss">Join Discussion</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- License -->
+    <section id="license" class="mb-14">
+      <h2 class="font-display text-2xl font-bold text-slate-900 mb-4" data-i18n="doc.licTitle">License</h2>
+      <p class="text-slate-600 mb-4" data-i18n="doc.licDesc">GoodsMart WMS is licensed under the <strong>GNU Affero General Public License v3.0 (AGPL-3.0)</strong>.</p>
+
+      <div class="bg-slate-50 rounded-xl p-5 space-y-2 text-sm">
+        <div class="flex items-start gap-2"><span class="text-brand-green">✓</span><span data-i18n="doc.licYes1">Free to use, modify, and distribute</span></div>
+        <div class="flex items-start gap-2"><span class="text-brand-green">✓</span><span data-i18n="doc.licYes2">Derivative works must remain open source under AGPL-3.0</span></div>
+        <div class="flex items-start gap-2"><span class="text-brand-green">✓</span><span data-i18n="doc.licYes3">Must include copyright and license notices</span></div>
+        <div class="flex items-start gap-2"><span class="text-red-500">✗</span><span data-i18n="doc.licNo1">Commercial use requires a separate license</span></div>
+        <div class="flex items-start gap-2"><span class="text-red-500">✗</span><span data-i18n="doc.licNo2">Closed-source distribution or SaaS requires authorization</span></div>
+      </div>
+
+      <p class="text-sm text-slate-500 mt-4" data-i18n="doc.licContact">For commercial licensing inquiries, contact <a href="mailto:goodsmart@goodsmart.jp" class="text-brand-purple hover:underline">goodsmart@goodsmart.jp</a>.</p>
+    </section>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<footer class="border-t border-slate-200 py-8 px-6 text-center text-sm text-slate-400">
+  <p>&copy; 2025 GoodsMart WMS. <span data-i18n="doc.footerLicense">Released under AGPL-3.0 License.</span></p>
+</footer>
+
+<script>
+// i18n translations
+const I={
+en:{
+'nav.home':'← Home',
+'sb.gettingStarted':'Getting Started','sb.overview':'Overview','sb.prerequisites':'Prerequisites','sb.quickStart':'Quick Start',
+'sb.backend':'Backend','sb.backendSetup':'Backend Setup','sb.envConfig':'Environment Config','sb.database':'Database','sb.apiModules':'API Modules','sb.errorCodes':'Error Codes',
+'sb.frontend':'Frontend','sb.frontendSetup':'Frontend Setup','sb.frontendStructure':'Project Structure',
+'sb.operations':'Operations','sb.deployment':'Deployment','sb.mqtt':'MQTT Integration',
+'sb.community':'Community','sb.contributing':'Contributing','sb.license':'License',
+'doc.title':'Documentation','doc.subtitle':'Complete guide for installing, configuring, and deploying GoodsMart WMS.',
+'doc.overviewNote':'GoodsMart WMS is a full-stack warehouse management system consisting of a Flask backend API and a Nuxt.js 4 frontend client. Both components must be deployed together for full functionality.',
+'doc.archTitle':'System Architecture',
+'doc.prereqTitle':'Prerequisites','doc.prereqDesc':'Ensure the following software is installed before starting:',
+'doc.prereqBackend':'Backend Requirements','doc.prereqFrontend':'Frontend Requirements',
+'doc.qsTitle':'Quick Start','doc.qsDesc':'Get the full system running in minutes with these steps.',
+'doc.qsStep1':'Clone & Set Up Backend','doc.qsStep2':'Clone & Set Up Frontend','doc.qsStep3':'Access the Application',
+'doc.qsAccess':'Open <strong>http://localhost:3000</strong> in your browser. The API runs on <strong>http://localhost:5000</strong>.',
+'doc.beTitle':'Backend Setup','doc.beTechTitle':'Tech Stack','doc.beStructTitle':'Project Structure',
+'doc.thComponent':'Component','doc.thTechnology':'Technology','doc.thDescription':'Description',
+'doc.beFramework':'Framework','doc.beFrameworkDesc':'Python web framework',
+'doc.beDatabase':'Database','doc.beDatabaseDesc':'Enterprise relational database',
+'doc.beORMDesc':'Object-relational mapping','doc.beAuth':'Authentication','doc.beAuthDesc':'Token-based authentication',
+'doc.beCache':'Cache','doc.beCacheDesc':'High-performance caching',
+'doc.beAPI':'API Docs','doc.beAPIDesc':'Interactive API documentation','doc.beMQTTDesc':'IoT device integration',
+'doc.envTitle':'Environment Configuration',
+'doc.envDesc':'Copy <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> to <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code> and configure the following variables:',
+'doc.envWarn':'Never commit your <code>.env</code> file to version control. It may contain sensitive credentials.',
+'doc.dbTitle':'Database Management','doc.dbInit':'Initialize Migrations','doc.dbMigrate':'Create New Migration','doc.dbRollback':'Rollback Migration',
+'doc.apiTitle':'API Modules','doc.apiDesc':'The backend exposes a RESTful API organized into the following modules. Interactive API docs are available at <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">/system/doc</code> (Swagger UI).',
+'doc.apiAuth':'Auth & Permissions','doc.apiAuth1':'• User registration & login','doc.apiAuth2':'• JWT token management','doc.apiAuth3':'• Role-based access control','doc.apiAuth4':'• Permission management',
+'doc.apiInv':'Inventory Management','doc.apiInv1':'• Product information CRUD','doc.apiInv2':'• Stock queries & adjustments','doc.apiInv3':'• Inventory alerts','doc.apiInv4':'• Batch tracking',
+'doc.apiOrder':'Order Management','doc.apiOrder1':'• Order creation & processing','doc.apiOrder2':'• Status tracking','doc.apiOrder3':'• Shipping management','doc.apiOrder4':'• Returns processing',
+'doc.apiWh':'Warehouse Management','doc.apiWh1':'• Warehouse CRUD','doc.apiWh2':'• Location management','doc.apiWh3':'• Inventory counting','doc.apiWh4':'• Transfer operations',
+'doc.errTitle':'Error Codes','doc.errDesc':'The API uses a structured error code system for consistent error handling.',
+'doc.errCat':'Category','doc.errRange':'Code Range','doc.errHttp':'HTTP','doc.errDescCol':'Description',
+'doc.errGen':'General','doc.errGenDesc':'Business logic errors',
+'doc.errAuth':'Authentication','doc.errAuthDesc':'Identity verification failures',
+'doc.errPerm':'Permission','doc.errPermDesc':'Insufficient access',
+'doc.errRes':'Resource','doc.errResDesc':'Resource not found',
+'doc.errVal':'Validation','doc.errValDesc':'Data format / content errors',
+'doc.errInv':'Inventory','doc.errInvDesc':'Stock-related business errors',
+'doc.errState':'State','doc.errStateDesc':'Invalid state transitions',
+'doc.feTitle':'Frontend Setup','doc.feTechTitle':'Tech Stack','doc.feInstTitle':'Installation',
+'doc.feFramework':'Framework','doc.feUI':'UI Library','doc.feState':'State','doc.feHTTP':'HTTP','doc.feStyle':'Styles','doc.feBuild':'Build',
+'doc.feEnvDesc':'Configure your <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code>:',
+'doc.feDevDesc':'— Start development server at localhost:3000','doc.feBuildDesc':'— Build for production','doc.fePreviewDesc':'— Preview production build',
+'doc.fsTitle':'Frontend Project Structure',
+'doc.depTitle':'Deployment','doc.depDesc':'To deploy the full GoodsMart WMS system, you need: the API service, the web client, PostgreSQL, and Redis.',
+'doc.depBackend':'Backend (Gunicorn)','doc.depFrontend':'Frontend (PM2)','doc.depSupervisor':'Supervisord Config',
+'doc.mqttTitle':'MQTT Integration','doc.mqttDesc':'GoodsMart WMS supports MQTT for IoT device integration such as barcode scanners and sensors.',
+'doc.mqttSub':'Subscribe to Messages','doc.mqttPub':'Publish Messages',
+'doc.contTitle':'Contributing','doc.contDesc':'We welcome contributions of all kinds! Here\'s how to get started:',
+'doc.contStep1':'Fork the repository on GitHub',
+'doc.contStep2':'Create a feature branch: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git checkout -b feature/AmazingFeature</code>',
+'doc.contStep3':'Commit your changes: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git commit -m \'Add AmazingFeature\'</code>',
+'doc.contStep4':'Push to your branch: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git push origin feature/AmazingFeature</code>',
+'doc.contStep5':'Open a Pull Request',
+'doc.contIssue':'Report an Issue','doc.contDiscuss':'Join Discussion',
+'doc.licTitle':'License','doc.licDesc':'GoodsMart WMS is licensed under the <strong>GNU Affero General Public License v3.0 (AGPL-3.0)</strong>.',
+'doc.licYes1':'Free to use, modify, and distribute','doc.licYes2':'Derivative works must remain open source under AGPL-3.0','doc.licYes3':'Must include copyright and license notices',
+'doc.licNo1':'Commercial use requires a separate license','doc.licNo2':'Closed-source distribution or SaaS requires authorization',
+'doc.licContact':'For commercial licensing inquiries, contact <a href="mailto:goodsmart@goodsmart.jp" class="text-brand-purple hover:underline">goodsmart@goodsmart.jp</a>.',
+'doc.footerLicense':'Released under AGPL-3.0 License.'
+},
+ja:{
+'nav.home':'← ホーム',
+'sb.gettingStarted':'はじめに','sb.overview':'概要','sb.prerequisites':'前提条件','sb.quickStart':'クイックスタート',
+'sb.backend':'バックエンド','sb.backendSetup':'バックエンド構築','sb.envConfig':'環境設定','sb.database':'データベース','sb.apiModules':'APIモジュール','sb.errorCodes':'エラーコード',
+'sb.frontend':'フロントエンド','sb.frontendSetup':'フロントエンド構築','sb.frontendStructure':'プロジェクト構成',
+'sb.operations':'運用','sb.deployment':'デプロイ','sb.mqtt':'MQTT連携',
+'sb.community':'コミュニティ','sb.contributing':'コントリビュート','sb.license':'ライセンス',
+'doc.title':'ドキュメント','doc.subtitle':'GoodsMart WMS のインストール、設定、デプロイに関する完全ガイドです。',
+'doc.overviewNote':'GoodsMart WMS は Flask バックエンド API と Nuxt.js 4 フロントエンドクライアントで構成されるフルスタック倉庫管理システムです。完全な機能を利用するには、両コンポーネントを同時にデプロイする必要があります。',
+'doc.archTitle':'システムアーキテクチャ',
+'doc.prereqTitle':'前提条件','doc.prereqDesc':'開始前に以下のソフトウェアがインストールされていることを確認してください：',
+'doc.prereqBackend':'バックエンド要件','doc.prereqFrontend':'フロントエンド要件',
+'doc.qsTitle':'クイックスタート','doc.qsDesc':'以下の手順でシステム全体を数分で起動できます。',
+'doc.qsStep1':'バックエンドのクローンとセットアップ','doc.qsStep2':'フロントエンドのクローンとセットアップ','doc.qsStep3':'アプリケーションにアクセス',
+'doc.qsAccess':'ブラウザで <strong>http://localhost:3000</strong> を開いてください。APIは <strong>http://localhost:5000</strong> で動作しています。',
+'doc.beTitle':'バックエンド構築','doc.beTechTitle':'技術スタック','doc.beStructTitle':'プロジェクト構成',
+'doc.thComponent':'コンポーネント','doc.thTechnology':'技術','doc.thDescription':'説明',
+'doc.beFramework':'フレームワーク','doc.beFrameworkDesc':'Python Webフレームワーク',
+'doc.beDatabase':'データベース','doc.beDatabaseDesc':'エンタープライズ向けリレーショナルDB',
+'doc.beORMDesc':'オブジェクト関係マッピング','doc.beAuth':'認証','doc.beAuthDesc':'トークンベース認証',
+'doc.beCache':'キャッシュ','doc.beCacheDesc':'高性能キャッシュ',
+'doc.beAPI':'APIドキュメント','doc.beAPIDesc':'インタラクティブAPIドキュメント','doc.beMQTTDesc':'IoTデバイス連携',
+'doc.envTitle':'環境設定',
+'doc.envDesc':'<code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> を <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code> にコピーし、以下の変数を設定してください：',
+'doc.envWarn':'<code>.env</code> ファイルをバージョン管理にコミットしないでください。機密情報が含まれる場合があります。',
+'doc.dbTitle':'データベース管理','doc.dbInit':'マイグレーション初期化','doc.dbMigrate':'新しいマイグレーション作成','doc.dbRollback':'マイグレーションロールバック',
+'doc.apiTitle':'APIモジュール','doc.apiDesc':'バックエンドは以下のモジュールに分かれたRESTful APIを提供します。インタラクティブAPIドキュメントは <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">/system/doc</code>（Swagger UI）で利用できます。',
+'doc.apiAuth':'認証・権限','doc.apiAuth1':'• ユーザー登録・ログイン','doc.apiAuth2':'• JWTトークン管理','doc.apiAuth3':'• ロールベースアクセス制御','doc.apiAuth4':'• 権限管理',
+'doc.apiInv':'在庫管理','doc.apiInv1':'• 商品情報CRUD','doc.apiInv2':'• 在庫照会・調整','doc.apiInv3':'• 在庫アラート','doc.apiInv4':'• バッチ追跡',
+'doc.apiOrder':'注文管理','doc.apiOrder1':'• 注文作成・処理','doc.apiOrder2':'• ステータス追跡','doc.apiOrder3':'• 出荷管理','doc.apiOrder4':'• 返品処理',
+'doc.apiWh':'倉庫管理','doc.apiWh1':'• 倉庫CRUD','doc.apiWh2':'• ロケーション管理','doc.apiWh3':'• 棚卸','doc.apiWh4':'• 移動操作',
+'doc.errTitle':'エラーコード','doc.errDesc':'APIは一貫したエラーハンドリングのために構造化されたエラーコードシステムを使用しています。',
+'doc.errCat':'カテゴリ','doc.errRange':'コード範囲','doc.errHttp':'HTTP','doc.errDescCol':'説明',
+'doc.errGen':'一般','doc.errGenDesc':'ビジネスロジックエラー',
+'doc.errAuth':'認証','doc.errAuthDesc':'本人確認失敗',
+'doc.errPerm':'権限','doc.errPermDesc':'アクセス権限不足',
+'doc.errRes':'リソース','doc.errResDesc':'リソースが見つかりません',
+'doc.errVal':'バリデーション','doc.errValDesc':'データ形式・内容エラー',
+'doc.errInv':'在庫','doc.errInvDesc':'在庫関連ビジネスエラー',
+'doc.errState':'ステート','doc.errStateDesc':'無効な状態遷移',
+'doc.feTitle':'フロントエンド構築','doc.feTechTitle':'技術スタック','doc.feInstTitle':'インストール',
+'doc.feFramework':'フレームワーク','doc.feUI':'UIライブラリ','doc.feState':'状態管理','doc.feHTTP':'HTTP','doc.feStyle':'スタイル','doc.feBuild':'ビルド',
+'doc.feEnvDesc':'<code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code> を設定してください：',
+'doc.feDevDesc':'— localhost:3000 で開発サーバーを起動','doc.feBuildDesc':'— 本番用ビルド','doc.fePreviewDesc':'— 本番ビルドプレビュー',
+'doc.fsTitle':'フロントエンドプロジェクト構成',
+'doc.depTitle':'デプロイ','doc.depDesc':'GoodsMart WMS の完全なデプロイには、APIサービス、Webクライアント、PostgreSQL、Redis が必要です。',
+'doc.depBackend':'バックエンド（Gunicorn）','doc.depFrontend':'フロントエンド（PM2）','doc.depSupervisor':'Supervisord設定',
+'doc.mqttTitle':'MQTT連携','doc.mqttDesc':'GoodsMart WMS はバーコードスキャナーやセンサーなどのIoTデバイス連携のためにMQTTをサポートしています。',
+'doc.mqttSub':'メッセージ購読','doc.mqttPub':'メッセージ発行',
+'doc.contTitle':'コントリビュート','doc.contDesc':'あらゆる形での貢献を歓迎します！以下の手順で始められます：',
+'doc.contStep1':'GitHubでリポジトリをフォーク',
+'doc.contStep2':'フィーチャーブランチを作成：<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git checkout -b feature/AmazingFeature</code>',
+'doc.contStep3':'変更をコミット：<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git commit -m \'Add AmazingFeature\'</code>',
+'doc.contStep4':'ブランチにプッシュ：<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git push origin feature/AmazingFeature</code>',
+'doc.contStep5':'プルリクエストを作成',
+'doc.contIssue':'Issueを報告','doc.contDiscuss':'ディスカッションに参加',
+'doc.licTitle':'ライセンス','doc.licDesc':'GoodsMart WMS は <strong>GNU Affero General Public License v3.0（AGPL-3.0）</strong>の下でライセンスされています。',
+'doc.licYes1':'自由に使用、変更、配布が可能','doc.licYes2':'派生物はAGPL-3.0の下でオープンソースである必要があります','doc.licYes3':'著作権およびライセンス表示を含める必要があります',
+'doc.licNo1':'商用利用には別途ライセンスが必要','doc.licNo2':'クローズドソース配布やSaaSには許可が必要',
+'doc.licContact':'商用ライセンスに関するお問い合わせは <a href="mailto:goodsmart@goodsmart.jp" class="text-brand-purple hover:underline">goodsmart@goodsmart.jp</a> まで。',
+'doc.footerLicense':'AGPL-3.0ライセンスの下で公開。'
+},
+zh:{
+'nav.home':'← 首页',
+'sb.gettingStarted':'快速入门','sb.overview':'概述','sb.prerequisites':'前提条件','sb.quickStart':'快速开始',
+'sb.backend':'后端','sb.backendSetup':'后端搭建','sb.envConfig':'环境配置','sb.database':'数据库','sb.apiModules':'API 模块','sb.errorCodes':'错误码',
+'sb.frontend':'前端','sb.frontendSetup':'前端搭建','sb.frontendStructure':'项目结构',
+'sb.operations':'运维','sb.deployment':'部署','sb.mqtt':'MQTT 集成',
+'sb.community':'社区','sb.contributing':'贡献指南','sb.license':'许可证',
+'doc.title':'文档','doc.subtitle':'GoodsMart WMS 安装、配置和部署完整指南。',
+'doc.overviewNote':'GoodsMart WMS 是一个由 Flask 后端 API 和 Nuxt.js 4 前端客户端组成的全栈仓库管理系统。两个组件需要同时部署才能使用完整功能。',
+'doc.archTitle':'系统架构',
+'doc.prereqTitle':'前提条件','doc.prereqDesc':'开始前请确保以下软件已安装：',
+'doc.prereqBackend':'后端要求','doc.prereqFrontend':'前端要求',
+'doc.qsTitle':'快速开始','doc.qsDesc':'按以下步骤几分钟内启动完整系统。',
+'doc.qsStep1':'克隆并搭建后端','doc.qsStep2':'克隆并搭建前端','doc.qsStep3':'访问应用',
+'doc.qsAccess':'在浏览器中打开 <strong>http://localhost:3000</strong>。API 运行在 <strong>http://localhost:5000</strong>。',
+'doc.beTitle':'后端搭建','doc.beTechTitle':'技术栈','doc.beStructTitle':'项目结构',
+'doc.thComponent':'组件','doc.thTechnology':'技术','doc.thDescription':'说明',
+'doc.beFramework':'框架','doc.beFrameworkDesc':'Python Web 框架',
+'doc.beDatabase':'数据库','doc.beDatabaseDesc':'企业级关系数据库',
+'doc.beORMDesc':'对象关系映射','doc.beAuth':'认证','doc.beAuthDesc':'基于令牌的认证',
+'doc.beCache':'缓存','doc.beCacheDesc':'高性能缓存',
+'doc.beAPI':'API 文档','doc.beAPIDesc':'交互式 API 文档','doc.beMQTTDesc':'IoT 设备集成',
+'doc.envTitle':'环境配置',
+'doc.envDesc':'将 <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env.example</code> 复制为 <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code> 并配置以下变量：',
+'doc.envWarn':'切勿将 <code>.env</code> 文件提交到版本控制。它可能包含敏感凭据。',
+'doc.dbTitle':'数据库管理','doc.dbInit':'初始化迁移','doc.dbMigrate':'创建新迁移','doc.dbRollback':'回滚迁移',
+'doc.apiTitle':'API 模块','doc.apiDesc':'后端提供以下模块化的 RESTful API。交互式 API 文档在 <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">/system/doc</code>（Swagger UI）查看。',
+'doc.apiAuth':'认证与权限','doc.apiAuth1':'• 用户注册与登录','doc.apiAuth2':'• JWT 令牌管理','doc.apiAuth3':'• 基于角色的访问控制','doc.apiAuth4':'• 权限管理',
+'doc.apiInv':'库存管理','doc.apiInv1':'• 商品信息 CRUD','doc.apiInv2':'• 库存查询与调整','doc.apiInv3':'• 库存预警','doc.apiInv4':'• 批次追踪',
+'doc.apiOrder':'订单管理','doc.apiOrder1':'• 订单创建与处理','doc.apiOrder2':'• 状态追踪','doc.apiOrder3':'• 发货管理','doc.apiOrder4':'• 退货处理',
+'doc.apiWh':'仓库管理','doc.apiWh1':'• 仓库 CRUD','doc.apiWh2':'• 库位管理','doc.apiWh3':'• 盘点','doc.apiWh4':'• 调拨操作',
+'doc.errTitle':'错误码','doc.errDesc':'API 使用结构化的错误码系统实现一致的错误处理。',
+'doc.errCat':'分类','doc.errRange':'代码范围','doc.errHttp':'HTTP','doc.errDescCol':'描述',
+'doc.errGen':'通用','doc.errGenDesc':'业务逻辑错误',
+'doc.errAuth':'认证','doc.errAuthDesc':'身份验证失败',
+'doc.errPerm':'权限','doc.errPermDesc':'权限不足',
+'doc.errRes':'资源','doc.errResDesc':'资源未找到',
+'doc.errVal':'验证','doc.errValDesc':'数据格式/内容错误',
+'doc.errInv':'库存','doc.errInvDesc':'库存相关业务错误',
+'doc.errState':'状态','doc.errStateDesc':'无效的状态转换',
+'doc.feTitle':'前端搭建','doc.feTechTitle':'技术栈','doc.feInstTitle':'安装',
+'doc.feFramework':'框架','doc.feUI':'UI 组件库','doc.feState':'状态管理','doc.feHTTP':'HTTP','doc.feStyle':'样式','doc.feBuild':'构建',
+'doc.feEnvDesc':'配置您的 <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.env</code>：',
+'doc.feDevDesc':'— 在 localhost:3000 启动开发服务器','doc.feBuildDesc':'— 构建生产版本','doc.fePreviewDesc':'— 预览生产构建',
+'doc.fsTitle':'前端项目结构',
+'doc.depTitle':'部署','doc.depDesc':'完整部署 GoodsMart WMS 需要：API 服务、Web 客户端、PostgreSQL 和 Redis。',
+'doc.depBackend':'后端（Gunicorn）','doc.depFrontend':'前端（PM2）','doc.depSupervisor':'Supervisord 配置',
+'doc.mqttTitle':'MQTT 集成','doc.mqttDesc':'GoodsMart WMS 支持通过 MQTT 连接条码扫描器和传感器等 IoT 设备。',
+'doc.mqttSub':'订阅消息','doc.mqttPub':'发布消息',
+'doc.contTitle':'贡献指南','doc.contDesc':'我们欢迎各种形式的贡献！以下是参与方式：',
+'doc.contStep1':'在 GitHub 上 Fork 仓库',
+'doc.contStep2':'创建功能分支：<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git checkout -b feature/AmazingFeature</code>',
+'doc.contStep3':'提交更改：<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git commit -m \'Add AmazingFeature\'</code>',
+'doc.contStep4':'推送到分支：<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs">git push origin feature/AmazingFeature</code>',
+'doc.contStep5':'创建 Pull Request',
+'doc.contIssue':'提交 Issue','doc.contDiscuss':'参与讨论',
+'doc.licTitle':'许可证','doc.licDesc':'GoodsMart WMS 基于 <strong>GNU Affero 通用公共许可证 v3.0（AGPL-3.0）</strong>发布。',
+'doc.licYes1':'可自由使用、修改和分发','doc.licYes2':'衍生作品必须在 AGPL-3.0 下保持开源','doc.licYes3':'必须包含版权和许可声明',
+'doc.licNo1':'商业使用需要单独许可','doc.licNo2':'闭源分发或 SaaS 需要授权',
+'doc.licContact':'商业许可咨询请联系 <a href="mailto:goodsmart@goodsmart.jp" class="text-brand-purple hover:underline">goodsmart@goodsmart.jp</a>。',
+'doc.footerLicense':'基于 AGPL-3.0 许可证发布。'
+}
+};
+
+let currentLang='en';
+
+function setLang(l){
+  currentLang=l;
+  localStorage.setItem('wms-lang',l);
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(I[l]&&I[l][k])el.innerHTML=I[l][k];
+  });
+  document.querySelectorAll('#btn-en,#btn-ja,#btn-zh').forEach(b=>{
+    b.classList.remove('bg-brand-purple','text-white');
+    b.classList.add('text-slate-600');
+  });
+  const ab=document.getElementById('btn-'+l);
+  if(ab){ab.classList.add('bg-brand-purple','text-white');ab.classList.remove('text-slate-600')}
+  document.documentElement.lang=l==='zh'?'zh-CN':l==='ja'?'ja':'en';
+}
+
+function copyCode(btn){
+  const code=btn.parentElement.querySelector('code');
+  const text=code.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy',2000);
+  });
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Sidebar active link tracking
+const sections=document.querySelectorAll('section[id]');
+const sidebarLinks=document.querySelectorAll('.sidebar-link');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      sidebarLinks.forEach(l=>l.classList.remove('active'));
+      const link=document.querySelector('.sidebar-link[href="#'+e.target.id+'"]');
+      if(link)link.classList.add('active');
+    }
+  });
+},{rootMargin:'-80px 0px -60% 0px',threshold:0});
+sections.forEach(s=>observer.observe(s));
+
+// Close mobile sidebar on link click
+sidebarLinks.forEach(l=>l.addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.remove('open');
+}));
+
+// Init language
+(function(){
+  const saved=localStorage.getItem('wms-lang');
+  if(saved&&I[saved]){setLang(saved);return}
+  const nav=navigator.language||'';
+  if(nav.startsWith('ja'))setLang('ja');
+  else if(nav.startsWith('zh'))setLang('zh');
+  else setLang('en');
+})();
+</script>
+</body>
+</html>
