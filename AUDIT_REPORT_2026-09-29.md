@@ -135,7 +135,7 @@
 | A-02 | ✅ | 扫码匹配 `current` 不复位：扫到不在单内的条码给上一次命中商品 +1（分拣、盘点）；拣货"不在本单"提示只首次有效；`searchJan` 同 | `SortingDetail.vue:116,149-171`、`StocktakingDetail.vue:122,141-157`、`PickingDetail.vue:182,186-207` | 局部 `findIndex` |
 | A-03 | ✅ | 拣货"完成"失败后 `checked` 不清，重试重复 POST 同一批次；`save/complete/start` 无锁可连点；空 details 也 POST | `PickingDetail.vue:113-161` | `submitting` 锁；成功后清 checked；catch 里 `init()` |
 | A-04 | ✅ | `request.js` 过期分支不 reject 也不清 token → 页面 TypeError、守卫放行 | `src/utils/request.js:40-43` | `removeItem('token')` + `reject`；识别其余 JWT 文案；未知码显示后端 message |
-| A-05 | ❓ | Android `allowUniversalAccessFromFileURLs`/`allowFileAccessFromFileURLs`/`MIXED_CONTENT_ALWAYS_ALLOW`/`usesCleartextTraffic`/`allowBackup` 全开 | `MainActivity.kt:51-60`、`AndroidManifest.xml:15,21` | `WebViewAssetLoader` + 关闭开关 + `allowBackup=false`　→ 已改为 WebViewAssetLoader（`AssetBridgeWebView.kt`，已核实 JsBridge 1.0.4 的 `generateBridgeWebViewClient` 可覆写），四个开关全关；**需真机验证**扫码桥接与页面加载。页面来源变为 `https://appassets.androidplatform.net`，生产 `CORS_ORIGINS` 必须包含它 |
+| A-05 | ✅ | Android `allowUniversalAccessFromFileURLs`/`allowFileAccessFromFileURLs`/`MIXED_CONTENT_ALWAYS_ALLOW`/`usesCleartextTraffic`/`allowBackup` 全开 | `MainActivity.kt:51-60`、`AndroidManifest.xml:15,21` | `WebViewAssetLoader` + 关闭开关 + `allowBackup=false`　→ 已改为 WebViewAssetLoader（`AssetBridgeWebView.kt`，已核实 JsBridge 1.0.4 的 `generateBridgeWebViewClient` 可覆写），四个开关全关；2026-09-29 已装到小米 21091116AC（Android 12）真机：页面加载正常、无崩溃；扫码桥接待登录后人工点"扫一扫"确认。页面来源变为 `https://appassets.androidplatform.net`，生产 `CORS_ORIGINS` 必须包含它 |
 | A-06 | ✅ | 非 company_admin 员工首次选仓时 `/staff/current` 带 `@warehouse_required()` 抛 14003，列表永远转圈 | `Select.vue:11`、`[BE] staff/views.py:88-93` | 后端 `/staff/current` 豁免；APP 空态区分错误 |
 
 ### 🟠 高
@@ -174,7 +174,7 @@
 
 | ID | 状态 | 问题 | 位置 |
 |---|---|---|---|
-| A-29 | ❓ | `AndroidManifest.xml` `tools:replace` 声明在 activity 元素上（合法但应移到根）；`onBackPressed` 已弃用 | `AndroidManifest.xml:36-40`、`MainActivity.kt:97`　→ 已改（`xmlns:tools` 移根、`OnBackPressedCallback`）；随 A-05 一起真机验证 |
+| A-29 | ✅ | `AndroidManifest.xml` `tools:replace` 声明在 activity 元素上（合法但应移到根）；`onBackPressed` 已弃用 | `AndroidManifest.xml:36-40`、`MainActivity.kt:97`　→ 已改（`xmlns:tools` 移根、`OnBackPressedCallback`）；随 A-05 一起真机验证 |
 | A-30 | ⏭ | ZXing 摄像头方案与 PDA 物理扫描头（键盘楔子/广播）不兼容；输入框只 `@blur` | `MainActivity.kt`、各输入框　→ PDA 物理扫描头（键盘楔子 / 广播）适配需要目标机型信息，暂不做 |
 | A-31 | ✅ | 死代码：`src/jsBridge.js` 与 `views/jsBridge.js` 无人 import；`Search/index.vue` 未定义变量；HelloWorld/TheWelcome/icons 脚手架；`DeliveryManagement/List.vue` 是 ASN 列表复制品；`QuantityBox` 无引用 | 各处 |
 | A-32 | ✅ | `vite-plugin-pwa`/`workbox-window` 未启用；`prepare: cypress install`；version 0.0.0 vs 1.0.1；`android/local.properties` 被跟踪 | `package.json`、git |
