@@ -7,7 +7,7 @@
 > |---|---|---|
 > | Backend | `15e3ac5` | 推送 main → 自动部署（含数据库迁移）——**2026-10-05 已上线** |
 > | Web | `6823c2f` | 推送 main → 自动部署——**2026-10-05 已上线（健康探测 HTTP 200，buildId=7c6d1a4d-bf1f-4739-b637-53e8cf3ea017，上一版在 /var/www/admin_wms_prev）** |
-> | APP | `c7b63ca` | 改版本号 → 推送 main → 打 `v1.3.2` 标签 → 审批后发布 |
+> | APP | `c7b63ca` | 改版本号 → 推送 main → 打 `v1.3.2` 标签 → 审批后发布——**2026-10-08 已发布 1.3.4（versionCode 9，`877670e`）**：`v1.3.2` 卡在 lintVitalRelease（`device_*` 备份 domain）、`v1.3.3` 卡在指纹校验（新版 apksigner 输出格式），都没有发布；`production` environment 未配审批，secret 仍在仓库级 |
 > | 主仓库 | 见 `git log -1` | 推送 main（只更新子模块指针） |
 
 ---
