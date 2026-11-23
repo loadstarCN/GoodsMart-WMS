@@ -14,7 +14,7 @@
 
 迁移 `e4b7c912a6d3` 修改历史枚举时，PostgreSQL 拒绝部署账号的类型所有者权限。事务整体回滚，生产库版本经只读查询确认为 `a3f9c2e7d415`。服务器代码退回 `5db93c7`，旧进程继续运行，公网健康接口返回 `ok`。仓员可继续使用旧版。
 
-生产库中两个枚举都归 `postgres` 所有，`warehouse` 缺少所有者权限，两项新值均缺失。由现有类型所有者在生产 WMS 库执行以下语句并提交后，可重试候选 `a6f585c`。该候选已在隔离 PostgreSQL 16 验证了两种情形：类型所有者添加缺失值，以及部署角色在两项值已存在时继续迁移。
+生产库中两个枚举都归 `postgres` 所有，`warehouse` 缺少所有者权限，两项新值均缺失。类型所有者可在生产 `warehouse` 数据库执行下方语句，或执行带事务和结果核对的[一次性 SQL 脚本](scripts/release_2_0_0_enum_values.sql)。两项值提交后可重试候选 `a6f585c`。该候选已在隔离 PostgreSQL 16 验证了类型所有者添加缺失值，以及部署角色在两项值已存在时继续迁移。
 
 ```sql
 ALTER TYPE public.dn_type_enum ADD VALUE IF NOT EXISTS 'damage_to_supplier';
