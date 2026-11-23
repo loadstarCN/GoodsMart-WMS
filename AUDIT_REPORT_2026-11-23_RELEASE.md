@@ -23,6 +23,8 @@ ALTER TYPE public.payment_status_enum ADD VALUE IF NOT EXISTS 'failed';
 
 仓员入口回下载实测为正式 1.4.2（15），文件哈希与既有正式包一致。原生 2.0.0（17）的正式签名已复核。待新后台和五类只读接口通过线上核验，再通过正式渠道切换仓员下载并回下载核对。[仓员下载页](https://hub.goodsmart.jp/)
 
+13:28 复核：修复后的候选 `a6f585c` 已通过完整回归、带数据升级、迁移往返和 PostgreSQL 库存并发测试。公网健康检查仍为 `ok / 5db93c7`，下载清单仍为 1.4.2（15）。生产库两项枚举待所有者补值。[候选验证记录](https://github.com/loadstarCN/GoodsMart-WMS-Backend/actions/runs/45114902530)
+
 ## 11:53（北京时间）原生 2.0.0 生产放行复审
 
 **结论为暂缓全员发布。** 当前候选可继续在隔离环境验收。线上检查使用发布包配置的 HTTPS 基址，仅发送 GET。此次复审没有部署后台、分发 APK 或写入生产业务数据。
