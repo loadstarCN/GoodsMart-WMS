@@ -1,12 +1,27 @@
 # WMS 改版本机上线验收
 
-2026-11-23。Android 正式候选为 Kotlin/Compose 原生 2.0.0（17）。已生成正式签名包，并从正式 1.4.2 在隔离模拟器覆盖升级。红米 Note 11 5G 安装独立预览包验收同一套界面。生产后台仍运行旧版，全员发布尚待放行。
+2026-11-23。Android 正式候选为 Kotlin/Compose 原生 2.0.0（17）。已生成正式签名包，并从正式 1.4.2 在隔离模拟器覆盖升级。红米 Note 11 5G 安装独立预览包验收同一套界面。生产部署在数据库迁移期间回滚，后台仍运行旧版，仓员下载入口仍提供 1.4.2。
 
 | 本地候选分支 `codex/wms-release-candidate-20261123` | 提交 |
 |---|---|
-| Backend | `0b784bd` |
+| Backend | `a6f585c` |
 | Web | `4290016` |
 | APP（原生 2.0.0 / 17） | `e2e4b35` |
+
+## 12:49（北京时间）生产部署与回滚
+
+后台 `602f1f2` 已通过全量回归、已有数据升级、迁移往返及 PostgreSQL 库存并发检查。部署进程在变更前保存并读取校验了归档 `/var/www/wms-backups/wms-before-deploy-20261123T044921Z.dump`，归档的 SHA-256 为 `1b289dd06ae2f9bb73598e52644113fd3b20175dc587edc6a9c2cf1f054879d1`。[部署记录](https://github.com/loadstarCN/GoodsMart-WMS-Backend/actions/runs/45111593605)
+
+迁移 `e4b7c912a6d3` 修改历史枚举时，PostgreSQL 拒绝部署账号的类型所有者权限。事务整体回滚，生产库版本经只读查询确认为 `a3f9c2e7d415`。服务器代码退回 `5db93c7`，旧进程继续运行，公网健康接口返回 `ok`。仓员可继续使用旧版。
+
+生产库中两个枚举都归 `postgres` 所有，`warehouse` 缺少所有者权限，两项新值均缺失。由现有类型所有者在生产 WMS 库执行以下语句并提交后，可重试候选 `a6f585c`。该候选已在隔离 PostgreSQL 16 验证了两种情形：类型所有者添加缺失值，以及部署角色在两项值已存在时继续迁移。
+
+```sql
+ALTER TYPE public.dn_type_enum ADD VALUE IF NOT EXISTS 'damage_to_supplier';
+ALTER TYPE public.payment_status_enum ADD VALUE IF NOT EXISTS 'failed';
+```
+
+仓员入口回下载实测为正式 1.4.2（15），文件哈希与既有正式包一致。原生 2.0.0（17）的正式签名已复核。待新后台和五类只读接口通过线上核验，再通过正式渠道切换仓员下载并回下载核对。[仓员下载页](https://hub.goodsmart.jp/)
 
 ## 11:53（北京时间）原生 2.0.0 生产放行复审
 
