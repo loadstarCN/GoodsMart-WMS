@@ -1,12 +1,18 @@
 # WMS 改版本机上线验收
 
-2026-11-23。后台、Web 和兼容版 PDA 1.4.3 已通过本机隔离回归。兼容版已完成正式签名与模拟器覆盖安装。生产后台仍运行旧版，现场手机的安装情况见下方验收记录。原生 Android 继续使用独立预览包名。
+2026-11-23。Android 正式候选为 Kotlin/Compose 原生 2.0.0（17）。已生成正式签名包，并从正式 1.4.2 在隔离模拟器覆盖升级。红米 Note 11 5G 安装独立预览包验收同一套界面。生产后台仍运行旧版，全员发布尚待放行。
 
 | 本地候选分支 `codex/wms-release-candidate-20261123` | 提交 |
 |---|---|
 | Backend | `0b784bd` |
 | Web | `4290016` |
-| APP（兼容版与原生预览） | `0ee0f8a` |
+| APP（原生 2.0.0 / 17） | `e2e4b35` |
+
+## 原生 Android 正式候选
+
+- [正式签名原生 APK](GoodsMart-WMS-APP/android-native/app/build/outputs/apk/release/gm_wms-native-2.0.0-17.apk) 的包名为 `jp.goodsmart.wms`，入口为 `jp.goodsmart.wms.nativeapp.MainActivity`。签名与上一正式发布包一致，SHA-256 为 `2d13c50faf5f27fffb6e511ff28be2a0dbe0fbc096f569665240543fe825ce8e`。在断网模拟器覆盖正式 1.4.2 后，UID 与首次安装时间一致，原生应用冷启动成功。
+- 红米端的单据列表与库存查询支持顶部直接输入、键盘提交和框内相机。真实取景及取消保留输入通过。向真机解码器提供合成 Code 128 图像后，扫码页自动退出、回填识别值并查询。现场纸质标签识读和长班次弱网仍待验证。
+- 红米端的仓库工作台按入库、出库和库存切换，一次显示一组有权限的作业。待核实提交、草稿可直接继续，本仓任务可展开，底部提供库存查询和记录入口。360dp、1.2 倍字体布局以及进出作业后保留分类已在真机复核。
 
 ## 回归和集成结果
 
@@ -27,15 +33,15 @@
 
 1. 在获准的目标环境确认实际迁移起点、生产数据备份及恢复路径，核对未结盘点、未关联调拨、退货和破损退供单。库存新流程已有写入后，直接降级会删除新增表。
 2. 后台先就绪，核对健康版本、权限种子和库存流水，再切 Web。用选定测试仓验证拣货路线、箱内容、待上架来源、调拨和客户退货五类接口；按实际启用范围核验外部服务。
-3. 用正式发布证书签署兼容版 1.4.3，在现场旧版上覆盖安装并完成实物扫码与混批少装。签名工作流、生产设备和长班次弱网属于现场验收。原生 Android 继续独立试点，本轮未改变正式包身份或最低客户端版本。
+3. 原生 2.0.0 已完成正式签名和模拟器同签覆盖。红米上的旧版 1.3.2 使用调试证书，本次现场界面验收使用独立预览包。正式现场设备的实物条码、混批少装与长班次弱网仍待验证。
 
-## 生产只读核验与正式包
+## 生产只读核验及旧版兼容记录
 
 - 生产 `/health` 返回 `status=ok`、`commit=5db93c7`。同一 HTTPS 主机的 `/warehouse/swagger.json` 列出 214 条路径，缺少五类新版 GET 定义。待上架来源、调拨和客户退货三个列表的 GET 均返回 404。
 - 本机通过校验证书的 HTTPS 连接运行候选业务处理程序。四组业务用例覆盖拣货路线、按批次少装及箱内容、待上架来源与数量、跨仓部分接收及重复提交、退货实收与待检。写入使用合成数据，四组均通过。
-- [本机正式签名验收包](GoodsMart-WMS-APP/android/app/build/outputs/apk/release/gm_wms-1.4.3-16-official.apk) 为 `jp.goodsmart.wms` 1.4.3 / 16，包内 API 指向正式 HTTPS。已用 Android 工具核对包名、版本及签名，签名与发布仓库记录的证书一致。文件 SHA-256 为 `7d9bb0a44ad680625b92aaa0f68d5d6736180c7247ad22aa701c43cd189faf84`。
+- 此前的 [WebView 兼容性验收包](GoodsMart-WMS-APP/android/app/build/outputs/apk/release/gm_wms-1.4.3-16-official.apk) 为 `jp.goodsmart.wms` 1.4.3 / 16，包内 API 指向正式 HTTPS。已用 Android 工具核对包名、版本及签名，签名与发布仓库记录的证书一致。文件 SHA-256 为 `7d9bb0a44ad680625b92aaa0f68d5d6736180c7247ad22aa701c43cd189faf84`。
 - 从上次正式发布任务取得 1.4.2 / 15，在独立模拟器上安装，再以正式 1.4.3 覆盖。升级后 UID 和首次安装时间相同，应用启动成功。
-- 已连接的 Redmi Note 11 5G 运行 Android 12。手机上的兼容版 1.3.2 / 7 和独立原生预览版 2.0.0 / 1 均使用本机 Android 调试证书。将这台红米的 1.3.2 APK 复制到干净模拟器，再尝试用正式 1.4.3 覆盖，Android 返回 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`，旧版保留在模拟器中。操作未读出业务数据，也未修改真机应用。现场同签覆盖、光学扫码和长班次弱网仍需在相应设备执行。
+- 此前在 Android 12 红米上核对到 1.3.2 / 7 和独立原生预览 2.0.0 / 1 均使用本机调试证书。将该机 1.3.2 的 APK 复制到干净模拟器尝试用正式 1.4.3 覆盖时，Android 返回 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`。此后红米的原生预览已更新至构建 17。
 
 切换后可用 [HTTPS 只读验收脚本](scripts/check_release_https.py) 复核部署。先运行 `python scripts/check_release_https.py https://api.wms.goodsmart.jp 0b784bd --schema-only`。核验业务时，使用已有会话的 `WMS_ACCEPTANCE_BEARER` 环境变量，把 `--schema-only` 换为 `--warehouse <仓号> --picking <已有拣货任务号> --dn <已有出库单号>`。脚本只发送 GET，只输出版本和检查结果。
 
